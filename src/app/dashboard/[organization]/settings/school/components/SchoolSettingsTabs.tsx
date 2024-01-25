@@ -11,7 +11,7 @@ import configuration from '~/configuration';
 
 const profileTabLinks = (organizationId: string) => ({
   General: {
-    path: getPath(organizationId, `school/school-details`),
+    path: getPath(organizationId, `school`),
     label: 'School Details',
   },
   Authentication: {

@@ -1,8 +1,4 @@
 import React from 'react';
-
-import NavigationMenu from '~/core/ui/Navigation/NavigationMenu';
-import NavigationItem from '~/core/ui/Navigation/NavigationItem';
-import AppHeader from '~/app/dashboard/[organization]/components/AppHeader';
 import { withI18n } from '~/i18n/with-i18n';
 import { PageBody } from '~/core/ui/Page';
 
@@ -38,7 +34,7 @@ async function SettingsLayout({
       /> */}
 
       <PageBody>
-        <NavigationMenu bordered>
+        {/* <NavigationMenu bordered>
           {links.map((link) => (
             <NavigationItem
               className={'flex-1 lg:flex-none'}
@@ -46,7 +42,7 @@ async function SettingsLayout({
               key={link.path}
             />
           ))}
-        </NavigationMenu>
+        </NavigationMenu> */}
 
         <div
           className={`mt-4 flex h-full flex-col space-y-4 lg:flex-row lg:space-x-8 lg:space-y-0`}
