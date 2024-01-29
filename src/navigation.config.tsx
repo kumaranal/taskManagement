@@ -3,7 +3,8 @@ import {
   Squares2X2Icon,
   UserGroupIcon,
   UserIcon,
-  AcademicCapIcon
+  AcademicCapIcon,
+  RectangleStackIcon
 } from '@heroicons/react/24/outline';
 
 import configuration from '~/configuration';
@@ -43,6 +44,27 @@ const NAVIGATION_CONFIG = (organization: string): NavigationConfig => ({
         return <Squares2X2Icon className={className} />;
       },
       end: true,
+    },
+    {
+      label: 'common:contactTabLabel',
+      path: getPath(organization, 'contact'),
+      Icon: ({ className }: { className: string }) => {
+        return <UserGroupIcon className={className} />;
+      }
+    },
+    {
+      label: 'common:DealsTabLabel',
+      path: getPath(organization, 'deals'),
+      Icon: ({ className }: { className: string }) => {
+        return <CreditCardIcon className={className} />;
+      }
+    },
+    {
+      label: 'common:activitiesTabLabel',
+      path: getPath(organization, 'activities'),
+      Icon: ({ className }: { className: string }) => {
+        return <UserGroupIcon className={className} />;
+      }
     },
     {
       label: 'common:settingsTabLabel',
