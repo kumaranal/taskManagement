@@ -6,6 +6,7 @@ import { Contact } from './types/type';
 type Client = SupabaseClient<Database>;
 
 export function createContact(client: Client, contact: Omit<Contact, 'id'>) {
+  console.log("contact",contact)
   return client.from(CONTACT_TABLE).insert({
     first_name: contact.first_name,
     last_name: contact.last_name,

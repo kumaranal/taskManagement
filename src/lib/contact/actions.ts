@@ -2,13 +2,11 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-
-
 import { withSession } from '~/core/generic/actions-utils';
 import getSupabaseServerActionClient from '~/core/supabase/action-client';
 import { parseOrganizationIdCookie } from '~/lib/server/cookies/organization.cookie';
 import requireSession from '~/lib/user/require-session';
-import verifyCsrfToken from '~/core/verify-csrf-token';
+// import verifyCsrfToken from '~/core/verify-csrf-token';
 import { Contact } from './types/type';
 import { createContact } from './mutations';
 

@@ -1,6 +1,6 @@
 CREATE TABLE contact (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    organization_id BIGINT NOT NULL REFERENCES organizations(id),
+   organization_id bigint not null references public.organizations,
     first_name VARCHAR(255) NOT NULL,
     last_name VARCHAR(255) NOT NULL,
     email VARCHAR(255),

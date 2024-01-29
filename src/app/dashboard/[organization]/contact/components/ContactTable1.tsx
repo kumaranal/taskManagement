@@ -8,7 +8,7 @@ import { formatDistance } from 'date-fns';
 import { ColumnDef } from '@tanstack/react-table';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 
-import Task from '~/lib/tasks/types/task';
+
 
 import {
   DropdownMenu,
@@ -26,8 +26,9 @@ import { deleteTaskAction, updateTaskAction } from '~/lib/tasks/actions';
 
 import Modal from '~/core/ui/Modal';
 import Button from '~/core/ui/Button';
+import { Contact } from '~/lib/contact/types/type';
 
-const TABLE_COLUMNS: ColumnDef<Task>[] = [
+const TABLE_COLUMNS: ColumnDef<Contact>[] = [
   {
     header: 'Name',
     cell: ({ row }) => {

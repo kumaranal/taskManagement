@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { use } from 'react'
 import AppHeader from '../components/AppHeader'
 import Trans from '~/core/ui/Trans'
 import { withI18n } from '~/i18n/with-i18n'
@@ -10,11 +10,24 @@ import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import Modal from '~/core/ui/Modal'
 import { Contact } from '~/lib/contact/types/type'
 import ContactForm from './components/ContactForm'
+import { getContacts } from '~/lib/contact/queries'
+import getSupabaseServerClient from '~/core/supabase/server-component-client';
+import ContactTable from './components/ContactTable'
 
 
+interface TasksPageParams {
+  params: {
+    organization: string;
+  };
+}
 
-const ContactPage = () => {
-  const count=false
+const ContactPage = ({ params }: TasksPageParams) => {
+
+  const { contacts } = use(
+    loadTasksData({
+      organizationUid: params.organization,
+    }),
+  );
   return (
     <div>
     <AppHeader
@@ -22,36 +35,54 @@ const ContactPage = () => {
         title={<Trans i18nKey={'common:contactTabLabel'} />}
       />
       <PageBody>
-      <If condition={!count}>
-          <TasksEmptyState />
+      <If condition={!contacts.length}>
+          <ContactEmptyState />
         </If>
         <TasksTableContainer
-          // pageIndex={pageIndex}
-          // pageCount={pageCount}
-          // contacts={contacts}
-          // query={searchParams.query}
+          contacts={contacts}
+     
         />
       </PageBody>
     </div>
   )
 }
 
+export async function loadTasksData(params: {
+  organizationUid: string;
+}) {
+  const client = getSupabaseServerClient();
+  const { organizationUid} = params;
+
+  const {
+    data: contacts,
+    error,
+  } = await getContacts(client,organizationUid);
+
+  if (error) {
+    console.error(error);
+
+    return {
+      contacts: [],
+    };
+  }
+
+  return {
+    contacts,
+  };
+}
+
+
 function TasksTableContainer({
   contacts,
-  pageCount,
-  pageIndex,
-  query,
 }: React.PropsWithChildren<{
-  contacts?: Contact[];
-  pageCount?: number;
-  pageIndex?: number;
-  query?: string;
+  contacts: Contact[];
 }>) {
+
   return (
     <div className={'flex flex-col space-y-4'}>
       <div className={'flex space-x-4 justify-between items-center'}>
         <div className={'flex'}>
-          <CreateTaskModal>
+          <CreateContactModal>
             <Button variant={'ghost'}>
               <span className={'flex space-x-2 items-center'}>
                 <PlusCircleIcon className={'w-4'} />
@@ -59,24 +90,22 @@ function TasksTableContainer({
                 <span>New Contact</span>
               </span>
             </Button>
-          </CreateTaskModal>
+          </CreateContactModal>
         </div>
-
-        {/* <SearchTaskInput query={query} /> */}
       </div>
 
-      {/* <TasksTable pageIndex={pageIndex} pageCount={pageCount} tasks={tasks} /> */}
+      <ContactTable  contacts={contacts} />
     </div>
   );
 }
-function CreateTaskModal(props: React.PropsWithChildren) {
+function CreateContactModal(props: React.PropsWithChildren) {
   return (
     <Modal heading={`Create Contact`} Trigger={props.children}>
      <ContactForm/>
     </Modal>
   );
 }
-function TasksEmptyState() {
+function ContactEmptyState() {
   return (
     <div className={'flex flex-col space-y-8 p-4'}>
       <div className={'flex flex-col'}>

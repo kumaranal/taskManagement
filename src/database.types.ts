@@ -34,6 +34,53 @@ export interface Database {
   }
   public: {
     Tables: {
+      contact: {
+        Row: {
+          created_at: string
+          designation: string | null
+          email: string | null
+          first_name: string
+          id: number
+          last_name: string
+          linkedin_profile: string | null
+          organization_id: number
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          designation?: string | null
+          email?: string | null
+          first_name: string
+          id?: never
+          last_name: string
+          linkedin_profile?: string | null
+          organization_id: number
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          designation?: string | null
+          email?: string | null
+          first_name?: string
+          id?: never
+          last_name?: string
+          linkedin_profile?: string | null
+          organization_id?: number
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       memberships: {
         Row: {
           code: string | null
@@ -135,6 +182,33 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+      }
+      school: {
+        Row: {
+          address: string
+          contact_no: number
+          created_at: string
+          id: number
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          contact_no: number
+          created_at?: string
+          id?: never
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          contact_no?: number
+          created_at?: string
+          id?: never
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       subscriptions: {
         Row: {
@@ -271,10 +345,6 @@ export interface Database {
           membership_id: number
         }
         Returns: number
-      }
-      install_extensions: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
       }
       transfer_organization: {
         Args: {

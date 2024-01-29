@@ -9,6 +9,53 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      contact: {
+        Row: {
+          created_at: string
+          designation: string | null
+          email: string | null
+          first_name: string
+          id: number
+          last_name: string
+          linkedin_profile: string | null
+          organization_id: number
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          designation?: string | null
+          email?: string | null
+          first_name: string
+          id?: never
+          last_name: string
+          linkedin_profile?: string | null
+          organization_id: number
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          designation?: string | null
+          email?: string | null
+          first_name?: string
+          id?: never
+          last_name?: string
+          linkedin_profile?: string | null
+          organization_id?: number
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "contact_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       memberships: {
         Row: {
           code: string | null
