@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { allPosts } from 'contentlayer/generated';
 
-import PostPreview from '~/app/(site)/blog/components/PostPreview';
-import GridList from '~/app/(site)/components/GridList';
+import PostPreview from '~/app/(sitessssss)/blog/components/PostPreview';
+import GridList from '~/app/(sitessssss)/components/GridList';
 import Container from '~/core/ui/Container';
 import SubHeading from '~/core/ui/SubHeading';
 import Heading from '~/core/ui/Heading';

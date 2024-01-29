@@ -1,7 +1,7 @@
 import Container from '~/core/ui/Container';
 import SubHeading from '~/core/ui/SubHeading';
 import Heading from '~/core/ui/Heading';
-import FaqItem from '~/app/(site)/components/FaqItem';
+import FaqItem from '~/app/(sitessssss)/components/FaqItem';
 
 export const metadata = {
   title: 'FAQ',

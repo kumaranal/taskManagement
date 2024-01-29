@@ -1,6 +1,7 @@
 import getSupabaseServerActionClient from "~/core/supabase/action-client";
 import { deleteSchool, insertSchool, updateSchoolDetails } from "./database/mutation";
 import { redirect } from "next/navigation";
+import { toast } from "sonner";
 
 export async function createPostAction(formData:FormData) {
   const name = formData.get('name') as string;
@@ -8,7 +9,7 @@ export async function createPostAction(formData:FormData) {
   const contact_no = formData.get('contact_no') as unknown as number;
   const organizationId = formData.get('organizationId') as unknown as number;
   const client = getSupabaseServerActionClient();
-     await insertSchool(client, {
+await insertSchool(client, {
       name,
       address,
       contact_no
@@ -17,6 +18,7 @@ export async function createPostAction(formData:FormData) {
     // revalidatePath(`/dashboard/view`, ‘page’);
     // redirect to the post page.
     // NB: it will return a 404 error since we haven’t implemented the post page yet
+     
     return redirect(`${`/dashboard/${organizationId}/settings/school`}`);
   }
 

@@ -11,8 +11,8 @@ import If from '~/core/ui/If';
 import Divider from '~/core/ui/Divider';
 
 import MDXRenderer from '~/core/ui/MDXRenderer/MDXRenderer';
-import DocsCards from '~/app/(site)/docs/components/DocsCards';
-import DocumentationPageLink from '~/app/(site)/docs/components/DocumentationPageLink';
+import DocsCards from '~/app/(sitessssss)/docs/components/DocsCards';
+import DocumentationPageLink from '~/app/(sitessssss)/docs/components/DocumentationPageLink';
 import getPageTree from '../utils/get-documentation-page-tree';
 
 const getPageBySlug = cache((slug: string) => {

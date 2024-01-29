@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Script from 'next/script';
 
 import { allPosts } from 'contentlayer/generated';
-import Post from '~/app/(site)/blog/components/Post';
+import Post from '~/app/(sitessssss)/blog/components/Post';
 
 import configuration from '~/configuration';
 import Container from '~/core/ui/Container';

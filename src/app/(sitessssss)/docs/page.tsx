@@ -3,7 +3,7 @@ import { allDocumentationPages } from 'contentlayer/generated';
 import Heading from '~/core/ui/Heading';
 import SubHeading from '~/core/ui/SubHeading';
 
-import DocsCards from '~/app/(site)/docs/components/DocsCards';
+import DocsCards from '~/app/(sitessssss)/docs/components/DocsCards';
 import { buildDocumentationTree } from './utils/build-documentation-tree';
 
 import configuration from '~/configuration';
