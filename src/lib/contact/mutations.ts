@@ -36,12 +36,12 @@ export function createContact(client: Client, contact: Omit<Contact, 'id'>) {
 //     .throwOnError();
 // }
 
-// export function deleteTask(client: Client, taskId: number) {
-//   return client
-//     .from(TASKS_TABLE)
-//     .delete()
-//     .match({
-//       id: taskId,
-//     })
-//     .throwOnError();
-// }
+export function deleteContact(client: Client, contactId: number) {
+  return client
+    .from(CONTACT_TABLE)
+    .delete()
+    .match({
+      id: contactId,
+    })
+    .throwOnError();
+}

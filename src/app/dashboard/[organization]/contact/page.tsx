@@ -94,7 +94,7 @@ function TasksTableContainer({
         </div>
       </div>
 
-      <ContactTable  contacts={contacts} />
+      <ContactTable contacts={contacts} />
     </div>
   );
 }

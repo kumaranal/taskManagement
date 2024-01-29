@@ -8,7 +8,7 @@ import { parseOrganizationIdCookie } from '~/lib/server/cookies/organization.coo
 import requireSession from '~/lib/user/require-session';
 // import verifyCsrfToken from '~/core/verify-csrf-token';
 import { Contact } from './types/type';
-import { createContact } from './mutations';
+import { createContact, deleteContact } from './mutations';
 
 type CreateTaskParams = {
   contact: Omit<Contact, 'id'>;
@@ -19,7 +19,7 @@ type UpdateTaskParams = {
 };
 
 type DeleteTaskParams = {
-  taskId: number;
+  contactId: number;
 };
 
 export const createContactAction = withSession(
@@ -53,15 +53,15 @@ export const createContactAction = withSession(
 //   },
 // );
 
-// export const deleteTaskAction = withSession(
-//   async (params: DeleteTaskParams) => {
-//     const client = getSupabaseServerActionClient();
-//     const session = await requireSession(client);
-//     const uid = await parseOrganizationIdCookie(session.user.id);
-//     const path = `/dashboard/${uid}/tasks`;
+export const deleteTaskAction = withSession(
+  async (params: DeleteTaskParams) => {
+    const client = getSupabaseServerActionClient();
+    const session = await requireSession(client);
+    const uid = await parseOrganizationIdCookie(session.user.id);
+    const path = `/dashboard/${uid}/contact`;
 
-//     await deleteTask(client, params.taskId);
+    await deleteContact(client, params.contactId);
 
-//     revalidatePath(path, 'page');
-//   },
-// );
+    revalidatePath(path, 'page');
+  },
+);

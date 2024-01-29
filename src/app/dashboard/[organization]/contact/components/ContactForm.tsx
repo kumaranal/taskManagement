@@ -45,7 +45,6 @@ const ContactForm: React.FC = () => {
 
       startTransition(async () => {
         await createContactAction({ contact });
-      
       });
     },
     [organizationId],
