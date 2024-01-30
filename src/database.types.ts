@@ -34,6 +34,76 @@ export interface Database {
   }
   public: {
     Tables: {
+      activities: {
+        Row: {
+          activity_type_id: number | null
+          contact_id: number | null
+          due_date: string | null
+          id: number
+          notes: string | null
+          organization_id: number
+          status: string | null
+          subject: string | null
+        }
+        Insert: {
+          activity_type_id?: number | null
+          contact_id?: number | null
+          due_date?: string | null
+          id?: never
+          notes?: string | null
+          organization_id: number
+          status?: string | null
+          subject?: string | null
+        }
+        Update: {
+          activity_type_id?: number | null
+          contact_id?: number | null
+          due_date?: string | null
+          id?: never
+          notes?: string | null
+          organization_id?: number
+          status?: string | null
+          subject?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activities_activity_type_id_fkey"
+            columns: ["activity_type_id"]
+            isOneToOne: false
+            referencedRelation: "activity_types"
+            referencedColumns: ["activity_type_id"]
+          },
+          {
+            foreignKeyName: "activities_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contact"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activities_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      activity_types: {
+        Row: {
+          activity_type_id: number
+          type_name: string
+        }
+        Insert: {
+          activity_type_id?: number
+          type_name: string
+        }
+        Update: {
+          activity_type_id?: number
+          type_name?: string
+        }
+        Relationships: []
+      }
       contact: {
         Row: {
           created_at: string
