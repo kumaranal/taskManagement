@@ -81,6 +81,80 @@ export interface Database {
           }
         ]
       }
+      deal_stages: {
+        Row: {
+          deal_stage_id: number
+          stage_name: string
+        }
+        Insert: {
+          deal_stage_id?: number
+          stage_name: string
+        }
+        Update: {
+          deal_stage_id?: number
+          stage_name?: string
+        }
+        Relationships: []
+      }
+      deals: {
+        Row: {
+          contact_id: number | null
+          deal_owner: number | null
+          deal_stage_id: number | null
+          deal_value: number | null
+          expected_close_date: string | null
+          id: number
+          organization_id: number
+        }
+        Insert: {
+          contact_id?: number | null
+          deal_owner?: number | null
+          deal_stage_id?: number | null
+          deal_value?: number | null
+          expected_close_date?: string | null
+          id?: never
+          organization_id: number
+        }
+        Update: {
+          contact_id?: number | null
+          deal_owner?: number | null
+          deal_stage_id?: number | null
+          deal_value?: number | null
+          expected_close_date?: string | null
+          id?: never
+          organization_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deals_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "contact"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deals_deal_owner_fkey"
+            columns: ["deal_owner"]
+            isOneToOne: false
+            referencedRelation: "contact"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deals_deal_stage_id_fkey"
+            columns: ["deal_stage_id"]
+            isOneToOne: false
+            referencedRelation: "deal_stages"
+            referencedColumns: ["deal_stage_id"]
+          },
+          {
+            foreignKeyName: "deals_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       memberships: {
         Row: {
           code: string | null
