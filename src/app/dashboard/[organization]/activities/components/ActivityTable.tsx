@@ -40,21 +40,11 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
     id: 'email',
     cell: ({ row }) => {
       const contact = row.original;
-            return (
+      
+
+      return (
         <span className={'truncate max-w-[50px]'}>
           { contact.email || '-'}
-        </span>
-      );
-    },
-  },
-  {
-    header: 'Contact No.',
-    id: 'contact',
-    cell: ({ row }) => {
-      const contact = row.original;
-            return (
-        <span className={'truncate max-w-[50px]'}>
-          { contact.phone || '-'}
         </span>
       );
     },
@@ -103,7 +93,7 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
   },
 ];
 
-function ContactTable(
+function ActivityTable(
   props: React.PropsWithChildren<{
     contacts: Contact[];
   }>,
@@ -167,4 +157,4 @@ function ConfirmDeleteTaskModal({
   );
 }
 
-export default ContactTable;
+export default ActivityTable;

@@ -1,6 +1,7 @@
 {
   "dashboardTabLabel": "Dashboard",
   "contactTabLabel":"Contact",
+  "activityTabLabel":"Activities",
   "activitiesTabLabel":"Activities",
   "DealsTabLabel":"Deals",
   "organizationSettingsTabLabel": "Organization",

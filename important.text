@@ -1,0 +1,22 @@
+INSERT INTO contact (organization_id, first_name, last_name, email, phone, designation, linkedin_profile)
+VALUES
+    (8, 'Aarav', 'Patel', 'aarav.patel@example.com', 9876543210, 'Software Engineer', 'linkedin.com/aaravpatel'),
+    (8, 'Ishita', 'Sharma', 'ishita.sharma@example.com', 9876543211, 'Product Manager', 'linkedin.com/ishitasharma'),
+    (8, 'Arjun', 'Singh', 'arjun.singh@example.com', 9876543212, 'QA Engineer', 'linkedin.com/arjunsingh'),
+    (8, 'Sanya', 'Gupta', 'sanya.gupta@example.com', 9876543213, 'UX Designer', 'linkedin.com/sanyagupta'),
+    (8, 'Rohan', 'Verma', 'rohan.verma@example.com', 9876543214, 'DevOps Engineer', 'linkedin.com/rohanverma'),
+    (8, 'Ananya', 'Joshi', 'ananya.joshi@example.com', 9876543215, 'Data Scientist', 'linkedin.com/ananyajoshi'),
+    (8, 'Vivek', 'Mishra', 'vivek.mishra@example.com', 9876543216, 'Software Engineer', 'linkedin.com/vivekmishra'),
+    (8, 'Aditi', 'Saxena', 'aditi.saxena@example.com', 9876543217, 'Product Manager', 'linkedin.com/aditisaxena'),
+    (8, 'Karan', 'Malhotra', 'karan.malhotra@example.com', 9876543218, 'QA Engineer', 'linkedin.com/karanmalhotra'),
+    (8, 'Neha', 'Rajput', 'neha.rajput@example.com', 9876543219, 'UX Designer', 'linkedin.com/neharajput'),
+    (8, 'Rahul', 'Shukla', 'rahul.shukla@example.com', 9876543220, 'DevOps Engineer', 'linkedin.com/rahulshukla'),
+    (8, 'Ananya', 'Kumar', 'ananya.kumar@example.com', 9876543221, 'Data Scientist', 'linkedin.com/ananyakumar'),
+    (8, 'Raj', 'Yadav', 'raj.yadav@example.com', 9876543222, 'Software Engineer', 'linkedin.com/rajyadav'),
+    (8, 'Simran', 'Goyal', 'simran.goyal@example.com', 9876543223, 'Product Manager', 'linkedin.com/simrangoyal'),
+    (8, 'Aryan', 'Sinha', 'aryan.sinha@example.com', 9876543224, 'QA Engineer', 'linkedin.com/aryansinha'),
+    (8, 'Priya', 'Choudhary', 'priya.choudhary@example.com', 9876543225, 'UX Designer', 'linkedin.com/priyachoudhary'),
+    (8, 'Arnav', 'Verma', 'arnav.verma@example.com', 9876543226, 'DevOps Engineer', 'linkedin.com/arnavverma'),
+    (8, 'Khushi', 'Bhatia', 'khushi.bhatia@example.com', 9876543227, 'Data Scientist', 'linkedin.com/khushibhatia'),
+    (8, 'Rishi', 'Mittal', 'rishi.mittal@example.com', 9876543228, 'Software Engineer', 'linkedin.com/rishimittal'),
+    (8, 'Isha', 'Gupta', 'isha.gupta@example.com', 9876543229, 'Product Manager', 'linkedin.com/ishagupta');

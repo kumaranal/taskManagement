@@ -13,3 +13,4 @@ export const SUBSCRIPTIONS_TABLE = `subscriptions`;
 export const ORGANIZATIONS_SUBSCRIPTIONS_TABLE = `organizations_subscriptions`;
 export const SCHOOL=`school`
 export const CONTACT_TABLE="contact"
+export const ACTIVITY_TYPES_TABLE="activity_types"

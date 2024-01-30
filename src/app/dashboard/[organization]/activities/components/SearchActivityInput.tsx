@@ -4,7 +4,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { FormEventHandler, useCallback } from 'react';
 import { TextFieldInput } from '~/core/ui/TextField';
 
-function SearchContactInput({
+function SearchActivityInput({
   query,
 }: React.PropsWithChildren<{
   query: Maybe<string>;
@@ -41,4 +41,4 @@ function SearchContactInput({
   );
 }
 
-export default SearchContactInput;
+export default SearchActivityInput;
