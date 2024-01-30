@@ -44,7 +44,7 @@ export interface Database {
           last_name: string
           linkedin_profile: string | null
           organization_id: number
-          phone: string | null
+          phone: number | null
           updated_at: string
         }
         Insert: {
@@ -56,7 +56,7 @@ export interface Database {
           last_name: string
           linkedin_profile?: string | null
           organization_id: number
-          phone?: string | null
+          phone?: number | null
           updated_at?: string
         }
         Update: {
@@ -68,7 +68,7 @@ export interface Database {
           last_name?: string
           linkedin_profile?: string | null
           organization_id?: number
-          phone?: string | null
+          phone?: number | null
           updated_at?: string
         }
         Relationships: [

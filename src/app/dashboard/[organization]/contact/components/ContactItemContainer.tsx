@@ -5,9 +5,8 @@ import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import Button from '~/core/ui/Button';
 import Heading from '~/core/ui/Heading';
 import { TextFieldInput, TextFieldLabel } from '~/core/ui/TextField';
-
-// import { updateTaskAction } from '~/lib/tasks/actions';
 import { Contact } from '~/lib/contact/types/type';
+import { updateContactAction } from '~/lib/contact/actions';
 
 const ContactItemContainer: React.FC<{
   contact: Contact;
@@ -22,17 +21,21 @@ const ContactItemContainer: React.FC<{
       const first_name = data.get('first_name') as string;
       const last_name = data.get('last_name') as string;
       const email = data.get('email') as string;
-      const phone = data.get('phone') as unknown as string;
+      const phone = data.get('phone') as unknown as number;
       const linkedin_profile = data.get('linked') as string;
       const designation = data.get('designation') as string;
       startTransition(async () => {
-        // await updateTaskAction({
-        //   contact: {
-        //     name,
-        //     description,
-        //     id: contact.id,
-        //   },
-        // });
+        await updateContactAction({
+          contact: {
+            first_name,
+            last_name,
+            email,
+            phone,
+            linkedin_profile,
+            designation,
+            id: contact.id,
+          },
+        });
       });
     },
     [contact.id],
@@ -57,7 +60,7 @@ const ContactItemContainer: React.FC<{
           Last Name
           <TextFieldInput
             required
-            defaultValue={contact.first_name}
+            defaultValue={contact.last_name}
             name={'last_name'}
           />
         </TextFieldLabel>
@@ -65,7 +68,7 @@ const ContactItemContainer: React.FC<{
           Email
           <TextFieldInput
             required
-            defaultValue={contact.first_name}
+            defaultValue={contact.email}
             name={'email'}
           />
         </TextFieldLabel>
@@ -73,7 +76,7 @@ const ContactItemContainer: React.FC<{
           Contact No
           <TextFieldInput
             required
-            defaultValue={contact.first_name}
+            defaultValue={contact.phone}
             name={'phone'}
           />
         </TextFieldLabel>
@@ -81,7 +84,7 @@ const ContactItemContainer: React.FC<{
           Designation
           <TextFieldInput
             required
-            defaultValue={contact.first_name}
+            defaultValue={contact.designation}
             name={'designation'}
           />
         </TextFieldLabel>
@@ -89,7 +92,7 @@ const ContactItemContainer: React.FC<{
           Linkedin Profile
           <TextFieldInput
             required
-            defaultValue={contact.first_name}
+            defaultValue={contact.linkedin_profile}
             name={'linked'}
           />
         </TextFieldLabel>

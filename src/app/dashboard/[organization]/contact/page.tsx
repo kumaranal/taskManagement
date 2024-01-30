@@ -24,7 +24,7 @@ interface TasksPageParams {
 const ContactPage = ({ params }: TasksPageParams) => {
 
   const { contacts } = use(
-    loadTasksData({
+    loadContactsData({
       organizationUid: params.organization,
     }),
   );
@@ -47,7 +47,7 @@ const ContactPage = ({ params }: TasksPageParams) => {
   )
 }
 
-export async function loadTasksData(params: {
+export async function loadContactsData(params: {
   organizationUid: string;
 }) {
   const client = getSupabaseServerClient();

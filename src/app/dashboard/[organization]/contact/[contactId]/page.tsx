@@ -1,29 +1,48 @@
-import React from 'react'
+import React from 'react';
 import AppHeader from '../../components/AppHeader';
-import Button from '~/core/ui/Button';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 import { PageBody } from '~/core/ui/Page';
 import ContactItemContainer from '../components/ContactItemContainer';
+import getSupabaseServerClient from '~/core/supabase/server-component-client';
+import { getContact } from '~/lib/contact/queries';
+import { use } from 'react';
 interface Context {
-    params: {
-        contactId: string;
+  params: {
+    contactId: number;
+  };
+}
+
+const ContactPage = ({ params }: Context) => {
+  const { contactId } = params;
+
+  const { contact } = use(
+    loadContactData(contactId),
+  );
+  return (
+    <>
+      <AppHeader title={`Contact`}></AppHeader>
+
+      <PageBody>
+        <ContactItemContainer contact={contact} />
+      </PageBody>
+    </>
+  );
+};
+export async function loadContactData(contactId:number) {
+  const client = getSupabaseServerClient();
+
+  const { data: contact, error } = await getContact(client, contactId);
+
+  if (error) {
+    console.error(error);
+
+    return {
+      contact: [],
     };
   }
 
-const ContactPage = ({params}:Context) => {
-    const contact=[]
-  return (
- 
-    <>
-    <AppHeader title={`Contact`}>
-    </AppHeader>
-
-    <PageBody>
-        <ContactItemContainer contact={contact}/>
-      
-    </PageBody>
-  </>
-  )
+  return {
+    contact,
+  };
 }
 
-export default ContactPage
+export default ContactPage;
