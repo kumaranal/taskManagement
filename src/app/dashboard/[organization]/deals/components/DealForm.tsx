@@ -19,32 +19,54 @@ import ContactSelect from './ContactSelect';
 import ActivityTypeSelect from './DealStageTypeSelect';
 import StatusSelect from './StatusSelect';
 import DealStageTypeSelect from './DealStageTypeSelect';
+import { createDealsAction } from '~/lib/deals/action';
 
 const DealForm: React.FC = ({ contacts, dealStageType }: any) => {
   const [isMutating, startTransition] = useTransition();
-  const [status, setStatus] = useState();
+  const [deal_owner, setDealowner] = useState();
+  const [contact_id, setSelectedContact] = useState();
+  const [deal_stage_id, setdealstagetype] = useState();
   const organization = useCurrentOrganization();
-  const organizationId = organization?.id as number;
+  const organization_id = organization?.id as number;
 
-  const onActivityCreate: FormEventHandler<HTMLFormElement> = useCallback(
+  const onDealCreate: FormEventHandler<HTMLFormElement> = useCallback(
     async (event) => {
       event.preventDefault();
       const target = event.currentTarget;
       const data = new FormData(target);
-      const subject = data.get('subject') as string;
-      const notes = data.get('notes') as string;
-      const dueDate = (data.get('dueDate') as string) || getDefaultDueDate();
+      const deal_value = data.get('dealValue') as unknown as number;
+      const expected_close_date = (data.get('dueDate') as string) || getDefaultDueDate();
+
+      const deals = {
+        organization_id,
+        contact_id,
+        deal_stage_id,
+        deal_value,
+        expected_close_date,
+        deal_owner
+      };
+
       startTransition(async () => {
-        // await createContactAction({ contact });
+        await createDealsAction({ deals });
       });
     },
-    [organizationId],
+    [organization_id,deal_owner,contact_id,deal_stage_id],
   );
+
   return (
-    <form className={'flex flex-col'} onSubmit={onActivityCreate}>
+    <form className={'flex flex-col'} onSubmit={onDealCreate}>
       <div className={'flex flex-col space-y-4 w-full'}>
-        <ContactSelect contacts={contacts} onSelectContact={(value: any)=>console.log("onSelectContact",value)} />
-        {/* <DealStageTypeSelect activitiesType={activitiesType}  onSelectActivityType={(value: any)=>console.log("value",value)}/> */}
+        <ContactSelect
+          contacts={contacts}
+          onSelectContact={(value: any) =>
+            setSelectedContact(value)
+          }
+        />
+        <DealStageTypeSelect
+          dealStageType={dealStageType}
+          onSelectdealstageType={(value: any) => setdealstagetype(value)}
+        />
+
         <TextField.Label>
           Deal Value
           <TextField.Input
@@ -53,17 +75,18 @@ const DealForm: React.FC = ({ contacts, dealStageType }: any) => {
             placeholder={'Add deal value here..'}
           />
         </TextField.Label>
-      
-        <StatusSelect onSelectStatus={(value: any) => setStatus(value)} />
+
         <TextField.Label>
-          Expected Close date (optional)
+          Expected Close date
           <TextField.Input name={'dueDate'} type={'date'} />
-          <TextField.Hint>
-            Leave empty to set the due date to tomorrow
-          </TextField.Hint>
         </TextField.Label>
-        
-        <ContactSelect contacts={contacts} onSelectContact={(value: any)=>console.log("onSelectContact",value)} />
+
+        <ContactSelect
+          contacts={contacts}
+          onSelectContact={(value: any) =>
+            setDealowner(value)
+          }
+        />
 
         <div className={'flex justify-end'}>
           <Button loading={isMutating}>

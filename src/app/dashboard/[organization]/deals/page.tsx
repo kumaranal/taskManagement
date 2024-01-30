@@ -14,8 +14,10 @@ import getSupabaseServerClient from '~/core/supabase/server-component-client';
 import ActivityForm from './components/DealForm';
 import { getActivitiesType } from '~/lib/activity/queries';
 import DealForm from './components/DealForm';
-import { getDealsData, getDealsTypeData } from '~/lib/deals/queries';
+import {  getDeals, getDealsData, getDealsStageType, } from '~/lib/deals/queries';
 import { collectGenerateParams } from 'next/dist/build/utils';
+import DealsTable from './components/DealsTable';
+import { Deals } from '~/lib/deals/types/type';
 
 interface DealPageParams {
   params: {
@@ -24,13 +26,11 @@ interface DealPageParams {
 }
 
 const DealPage = ({ params }: DealPageParams) => {
-  const { contacts, DealStageType } = use(
+  const { contacts, DealStageType ,deals} = use(
     loadData({
       organizationUid: params.organization,
     }),
   );
-  console.log("contact",contacts)
-  const deals: string | any[] = [];
 
   return (
     <div>
@@ -52,22 +52,22 @@ const DealPage = ({ params }: DealPageParams) => {
 export async function loadData(params: { organizationUid: string }) {
   const client = getSupabaseServerClient();
   const { organizationUid } = params;
-  console.log("working")
-  const { data: DealStageType } = await getDealsTypeData(client);
-  const { data: contacts, error } = await getContacts(client, organizationUid);
+  const { data: DealStageType } = await getDealsStageType(client);
+  const { data: contacts, } = await getContacts(client, organizationUid);
+  const { data: deals ,error} = await getDealsData(client, organizationUid);
 
   if (error) {
     console.error(error);
 
     return {
-      contacts: [],
+      deals: [],
     };
   }
 
-  console.log("contacts",contacts)
   return {
     contacts,
-    DealStageType
+    DealStageType,
+    deals
   };
 }
 
@@ -76,7 +76,7 @@ function DealsTableContainer({
   dealStageType,
   contacts,
 }: React.PropsWithChildren<{
-  deals: Contact[];
+  deals: Deals[];
   contacts: Contact[];
   dealStageType: any
 }>) {
@@ -95,9 +95,9 @@ function DealsTableContainer({
           </CreateDealsModal>
         </div>
       </div>
-      {/* <If condition={activities.length}>
-        <ContactTable activities={activities} />
-      </If> */}
+      <If condition={deals.length}>
+        <DealsTable deals={deals} />
+      </If>
     </div>
   );
 }
