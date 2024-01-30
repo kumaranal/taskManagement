@@ -44,7 +44,7 @@ export interface Database {
           last_name: string
           linkedin_profile: string | null
           organization_id: number
-          phone: number | null
+          phone: number
           updated_at: string
         }
         Insert: {
@@ -56,7 +56,7 @@ export interface Database {
           last_name: string
           linkedin_profile?: string | null
           organization_id: number
-          phone?: number | null
+          phone: number
           updated_at?: string
         }
         Update: {
@@ -68,7 +68,7 @@ export interface Database {
           last_name?: string
           linkedin_profile?: string | null
           organization_id?: number
-          phone?: number | null
+          phone?: number
           updated_at?: string
         }
         Relationships: [
@@ -84,45 +84,51 @@ export interface Database {
       deal_stages: {
         Row: {
           deal_stage_id: number
-          stage_name: string
+          stage_name: string | null
         }
         Insert: {
-          deal_stage_id?: number
-          stage_name: string
+          deal_stage_id?: never
+          stage_name?: string | null
         }
         Update: {
-          deal_stage_id?: number
-          stage_name?: string
+          deal_stage_id?: never
+          stage_name?: string | null
         }
         Relationships: []
       }
       deals: {
         Row: {
           contact_id: number | null
+          created_at: string
           deal_owner: number | null
           deal_stage_id: number | null
           deal_value: number | null
           expected_close_date: string | null
           id: number
           organization_id: number
+          updated_at: string
         }
         Insert: {
           contact_id?: number | null
+          created_at?: string
           deal_owner?: number | null
           deal_stage_id?: number | null
           deal_value?: number | null
           expected_close_date?: string | null
           id?: never
           organization_id: number
+          updated_at?: string
         }
         Update: {
           contact_id?: number | null
+          created_at?: string
           deal_owner?: number | null
           deal_stage_id?: number | null
           deal_value?: number | null
           expected_close_date?: string | null
           id?: never
           organization_id?: number
+          updated_at?: string
         }
         Relationships: [
           {

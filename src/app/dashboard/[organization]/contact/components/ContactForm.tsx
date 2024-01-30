@@ -9,7 +9,6 @@ import If from '~/core/ui/If';
 import useCurrentOrganization from '~/lib/organizations/hooks/use-current-organization';
 import { createContactAction } from '~/lib/contact/actions';
 
-
 const ContactForm: React.FC = () => {
   const [isMutating, startTransition] = useTransition();
   const organization = useCurrentOrganization();
@@ -49,9 +48,13 @@ const ContactForm: React.FC = () => {
     },
     [organizationId],
   );
-
-
-
+  const handleKeyDown = (event:any) => {
+    const keyCode = event.key;
+    // Allow only numeric characters and backspace
+    if ((isNaN(keyCode) || keyCode === ' ') && keyCode !== 'Backspace') {
+      event.preventDefault();
+    }
+  };
   return (
     <form className={'flex flex-col'} onSubmit={onCreateTask}>
       <div className={'flex flex-col space-y-4 w-full'}>
@@ -65,19 +68,38 @@ const ContactForm: React.FC = () => {
         </TextField.Label>
         <TextField.Label>
           Email Id
-          <TextField.Input required name={'email'} placeholder={'ex. ramsingh@gmail.com'} />
+          <TextField.Input
+            required
+            name={'email'}
+            placeholder={'ex. ramsingh@gmail.com'}
+          />
         </TextField.Label>
         <TextField.Label>
           Contact No
-          <TextField.Input required name={'phone'} placeholder={'ex. 58787878787'} />
+          <TextField.Input
+            required
+            name={'phone'}
+            type="text"
+            placeholder={'ex. 58787878787'}
+            onKeyDown={handleKeyDown}
+            title="Please enter only numeric characters."
+          />
         </TextField.Label>
         <TextField.Label>
-        Linkedin Profile
-          <TextField.Input required name={'linkedin'} placeholder={'ex. https://www.linkedin.com/iranee65454'} />
+          Linkedin Profile
+          <TextField.Input
+            required
+            name={'linkedin'}
+            placeholder={'ex. https://www.linkedin.com/iranee65454'}
+          />
         </TextField.Label>
         <TextField.Label>
           Designation
-          <TextField.Input required name={'designation'} placeholder={'ex. Marketing Head'} />
+          <TextField.Input
+            required
+            name={'designation'}
+            placeholder={'ex. Marketing Head'}
+          />
         </TextField.Label>
 
         <div className={'flex justify-end'}>
