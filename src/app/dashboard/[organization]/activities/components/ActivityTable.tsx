@@ -26,7 +26,7 @@ const TABLE_COLUMNS: ColumnDef<Activity>[] = [
       const activity = row.original;
 
       return (
-        <Link className={'hover:underline'} href={'activity/' + activity.id}>
+        <Link className={'hover:underline'} href={'activities/' + activity.id}>
           {activity.contactDetails?.first_name}{' '}
           {activity.contactDetails?.last_name}
         </Link>

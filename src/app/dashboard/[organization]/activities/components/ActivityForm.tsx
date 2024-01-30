@@ -28,13 +28,13 @@ const ActivityForm: React.FC = ({ contacts, activitiesType }: any) => {
       const data = new FormData(target);
       const subject = data.get('subject') as string;
       const notes = data.get('notes') as string;
-      const dueDate = (data.get('dueDate') as string) || getDefaultDueDate();
+      const due_date = (data.get('dueDate') as string) || getDefaultDueDate();
 
       const activity = {
         organizationId,
         subject,
         notes,
-        dueDate,
+        due_date,
         status,
         selectedContact,
         activities
@@ -66,7 +66,7 @@ const ActivityForm: React.FC = ({ contacts, activitiesType }: any) => {
           />
         </TextField.Label>
         <Label>
-          notes
+          Notes
           <Textarea
             name={'notes'}
             className={'h-32'}
