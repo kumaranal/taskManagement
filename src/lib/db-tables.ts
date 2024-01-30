@@ -14,5 +14,7 @@ export const ORGANIZATIONS_SUBSCRIPTIONS_TABLE = `organizations_subscriptions`;
 export const SCHOOL=`school`
 export const CONTACT_TABLE="contact"
 export const ACTIVITY_TYPES_TABLE="activity_types"
+export const DEALS_TABLE= `deals`
+export const DEALS_STAGE_TABLE= `deal_stages`
 export const ACTIVITY_TABLE="activities"
 
