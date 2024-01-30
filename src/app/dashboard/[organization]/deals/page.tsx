@@ -15,6 +15,7 @@ import ActivityForm from './components/DealForm';
 import { getActivitiesType } from '~/lib/activity/queries';
 import DealForm from './components/DealForm';
 import { getDealsData, getDealsTypeData } from '~/lib/deals/queries';
+import { collectGenerateParams } from 'next/dist/build/utils';
 
 interface DealPageParams {
   params: {
@@ -28,6 +29,7 @@ const DealPage = ({ params }: DealPageParams) => {
       organizationUid: params.organization,
     }),
   );
+  console.log("contact",contacts)
   const deals: string | any[] = [];
 
   return (
@@ -50,6 +52,7 @@ const DealPage = ({ params }: DealPageParams) => {
 export async function loadData(params: { organizationUid: string }) {
   const client = getSupabaseServerClient();
   const { organizationUid } = params;
+  console.log("working")
   const { data: DealStageType } = await getDealsTypeData(client);
   const { data: contacts, error } = await getContacts(client, organizationUid);
 
@@ -61,6 +64,7 @@ export async function loadData(params: { organizationUid: string }) {
     };
   }
 
+  console.log("contacts",contacts)
   return {
     contacts,
     DealStageType
@@ -72,7 +76,7 @@ function DealsTableContainer({
   dealStageType,
   contacts,
 }: React.PropsWithChildren<{
-  activities: Contact[];
+  deals: Contact[];
   contacts: Contact[];
   dealStageType: any
 }>) {
@@ -107,7 +111,7 @@ function CreateDealsModal({
   dealStageType: any
 }) {
   return (
-    <Modal heading={`Create Activity`} Trigger={children}>
+    <Modal heading={`Create Deals`} Trigger={children}>
       <DealForm contacts={contacts} dealStageType={dealStageType} />
     </Modal>
   );

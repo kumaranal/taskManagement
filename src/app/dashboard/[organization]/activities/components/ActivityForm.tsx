@@ -8,20 +8,16 @@ import If from '~/core/ui/If';
 import useCurrentOrganization from '~/lib/organizations/hooks/use-current-organization';
 import Label from '~/core/ui/Label';
 import Textarea from '~/core/ui/Textarea';
-import {
-  Select,
-  SelectItem,
-  SelectContent,
-  SelectTrigger,
-  SelectValue,
-} from '~/core/ui/Select';
 import ContactSelect from './ContactSelect';
 import ActivityTypeSelect from './ActivityTypeSelect';
 import StatusSelect from './StatusSelect';
+import { createActivityAction } from '~/lib/activity/action';
 
 const ActivityForm: React.FC = ({ contacts, activitiesType }: any) => {
   const [isMutating, startTransition] = useTransition();
   const [status, setStatus] = useState();
+  const [selectedContact, setSelectedContact] = useState();
+  const [activities, setActivities] = useState();
   const organization = useCurrentOrganization();
   const organizationId = organization?.id as number;
 
@@ -34,24 +30,33 @@ const ActivityForm: React.FC = ({ contacts, activitiesType }: any) => {
       const notes = data.get('notes') as string;
       const dueDate = (data.get('dueDate') as string) || getDefaultDueDate();
 
-      // const contact = {
-      //   organizationId,
-      //   first_name,
-      //   last_name,
-
-      // };
-
+      const activity = {
+        organizationId,
+        subject,
+        notes,
+        dueDate,
+        status,
+        selectedContact,
+        activities
+      };
       startTransition(async () => {
-        // await createContactAction({ contact });
+      
+        await createActivityAction({ activity });
       });
     },
-    [organizationId],
+    [activities, organizationId, selectedContact, status],
   );
   return (
     <form className={'flex flex-col'} onSubmit={onActivityCreate}>
       <div className={'flex flex-col space-y-4 w-full'}>
-        <ContactSelect contacts={contacts} onSelectContact={(value: any)=>console.log("onSelectContact",value)} />
-        <ActivityTypeSelect activitiesType={activitiesType}  onSelectActivityType={(value: any)=>console.log("value",value)}/>
+        <ContactSelect
+          contacts={contacts}
+          onSelectContact={(value: any) => setSelectedContact(value)}
+        />
+        <ActivityTypeSelect
+          activitiesType={activitiesType}
+          onSelectActivityType={(value: any) => setActivities(value)}
+        />
         <TextField.Label>
           Subject
           <TextField.Input

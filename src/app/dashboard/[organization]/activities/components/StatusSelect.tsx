@@ -8,10 +8,10 @@ const StatusSelect = ({ onSelectStatus }: any) => {
       label: "Open", value: "Open"
     },
     {
-      label: "Ongoing", value: "ongoing"
+      label: "Ongoing", value: "Ongoing"
     },
     {
-      label: "Closed", value: "closed"
+      label: "Closed", value: "Closed"
     }
   ];
 

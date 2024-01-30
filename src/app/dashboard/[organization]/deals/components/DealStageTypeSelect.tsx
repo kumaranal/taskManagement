@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Label from '~/core/ui/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/core/ui/Select';
 
-const ActivityTypeSelect = ({ activitiesType, onSelectActivityType }: any) => {
+const DealStageTypeSelect = ({ activitiesType, onSelectActivityType }: any) => {
   const contactOptions = activitiesType.map((activity: { activity_type_id: number; type_name: string; }) => ({
     label: `${activity.type_name}`,
     value: activity.activity_type_id.toString(),
@@ -38,4 +38,4 @@ const ActivityTypeSelect = ({ activitiesType, onSelectActivityType }: any) => {
   );
 };
 
-export default ActivityTypeSelect;
+export default DealStageTypeSelect;

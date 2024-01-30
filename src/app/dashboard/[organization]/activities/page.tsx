@@ -12,7 +12,9 @@ import { Contact } from '~/lib/contact/types/type';
 import { getContacts } from '~/lib/contact/queries';
 import getSupabaseServerClient from '~/core/supabase/server-component-client';
 import ActivityForm from './components/ActivityForm';
-import { getActivitiesType } from '~/lib/activity/queries';
+import { getActivities, getActivitiesType } from '~/lib/activity/queries';
+import { Activity } from '~/lib/activity/types/type';
+import ActivityTable from './components/ActivityTable';
 
 interface ActivityPageParams {
   params: {
@@ -21,13 +23,12 @@ interface ActivityPageParams {
 }
 
 const ContactPage = ({ params }: ActivityPageParams) => {
-  const { contacts,activitiesType } = use(
+  const { contacts,activitiesType ,activities} = use(
     loadData({
       organizationUid: params.organization,
     }),
   );
-  const activities: string | any[] = [];
-
+  
   return (
     <div>
       <AppHeader
@@ -49,19 +50,22 @@ export async function loadData(params: { organizationUid: string }) {
   const client = getSupabaseServerClient();
   const { organizationUid } = params;
   const { data: activitiesType, } = await getActivitiesType(client);
-  const { data: contacts, error } = await getContacts(client, organizationUid);
+  const { data: contacts,  } = await getContacts(client, organizationUid);
+  const { data: activities ,error} = await getActivities(client, organizationUid);
+
 
   if (error) {
     console.error(error);
 
     return {
-      contacts: [],
+      activities: [],
     };
   }
 
   return {
     contacts,
-    activitiesType
+    activitiesType,
+    activities
   };
 }
 
@@ -70,7 +74,7 @@ function ActivityTableContainer({
   activitiesType,
   contacts,
 }: React.PropsWithChildren<{
-  activities: Contact[];
+  activities: Activity[];
   contacts: Contact[];
   activitiesType:any
 }>) {
@@ -89,9 +93,9 @@ function ActivityTableContainer({
           </CreateActivityModal>
         </div>
       </div>
-      {/* <If condition={activities.length}>
-        <ContactTable activities={activities} />
-      </If> */}
+      <If condition={activities.length}>
+        <ActivityTable activities={activities} />
+      </If>
     </div>
   );
 }

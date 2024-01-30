@@ -14,7 +14,7 @@ export async function getContacts(client: Client, organization_id: string) {
 
   const org_id=data.data?.id;
 
-  return client
+  const data1= client
     .from(CONTACT_TABLE)
     .select(
       ` id,
@@ -27,6 +27,8 @@ export async function getContacts(client: Client, organization_id: string) {
       linkedin_profile`,
     )
     .eq('organization_id', org_id);
+    console.log("data1",data1)
+    return data1;
 }
 
 

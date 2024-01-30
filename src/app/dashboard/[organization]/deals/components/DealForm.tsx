@@ -16,8 +16,9 @@ import {
   SelectValue,
 } from '~/core/ui/Select';
 import ContactSelect from './ContactSelect';
-import ActivityTypeSelect from './ActivityTypeSelect';
+import ActivityTypeSelect from './DealStageTypeSelect';
 import StatusSelect from './StatusSelect';
+import DealStageTypeSelect from './DealStageTypeSelect';
 
 const DealForm: React.FC = ({ contacts, dealStageType }: any) => {
   const [isMutating, startTransition] = useTransition();
@@ -43,36 +44,31 @@ const DealForm: React.FC = ({ contacts, dealStageType }: any) => {
     <form className={'flex flex-col'} onSubmit={onActivityCreate}>
       <div className={'flex flex-col space-y-4 w-full'}>
         <ContactSelect contacts={contacts} onSelectContact={(value: any)=>console.log("onSelectContact",value)} />
-        <ActivityTypeSelect activitiesType={activitiesType}  onSelectActivityType={(value: any)=>console.log("value",value)}/>
+        {/* <DealStageTypeSelect activitiesType={activitiesType}  onSelectActivityType={(value: any)=>console.log("value",value)}/> */}
         <TextField.Label>
-          Subject
+          Deal Value
           <TextField.Input
             required
-            name={'subject'}
-            placeholder={'Add subject here..'}
+            name={'dealValue'}
+            placeholder={'Add deal value here..'}
           />
         </TextField.Label>
-        <Label>
-          notes
-          <Textarea
-            name={'notes'}
-            className={'h-32'}
-            placeholder={'Add notes...'}
-          />
-        </Label>
+      
         <StatusSelect onSelectStatus={(value: any) => setStatus(value)} />
         <TextField.Label>
-          Due date (optional)
+          Expected Close date (optional)
           <TextField.Input name={'dueDate'} type={'date'} />
           <TextField.Hint>
             Leave empty to set the due date to tomorrow
           </TextField.Hint>
         </TextField.Label>
+        
+        <ContactSelect contacts={contacts} onSelectContact={(value: any)=>console.log("onSelectContact",value)} />
 
         <div className={'flex justify-end'}>
           <Button loading={isMutating}>
-            <If condition={isMutating} fallback={<>Create Activity</>}>
-              Creating Activity...
+            <If condition={isMutating} fallback={<>Create Deals</>}>
+              Creating Deals...
             </If>
           </Button>
         </div>
