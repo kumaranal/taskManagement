@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '~/database.types';
 import {
+  ACTIVITY_TABLE,
   ACTIVITY_TYPES_TABLE,
   CONTACT_TABLE,
   ORGANIZATIONS_TABLE,
@@ -8,29 +9,39 @@ import {
 
 type Client = SupabaseClient<Database>;
 
-// export async function getContacts(client: Client, organization_id: string) {
-//   const data = await client
-//     .from(ORGANIZATIONS_TABLE)
-//     .select(`id`)
-//     .eq(`uuid`, organization_id)
-//     .single();
+export async function getActivities(client: Client, organization_id: string) {
+  const data = await client
+    .from(ORGANIZATIONS_TABLE)
+    .select(`id`)
+    .eq(`uuid`, organization_id)
+    .single();
 
-//   const org_id=data.data?.id;
+    const org_id = data.data?.id;
 
-//   return client
-//     .from(CONTACT_TABLE)
-//     .select(
-//       ` id,
-//       first_name,
-//       organizationId: organization_id,
-//       last_name,
-//       email,
-//       phone,
-//       designation,
-//       linkedin_profile`,
-//     )
-//     .eq('organization_id', org_id);
-// }
+    // Fetch activities with contact information
+    const activitiesData = await client
+      .from(ACTIVITY_TABLE)
+      .select(
+        `id,
+        organization_id,
+        subject,
+        due_date,
+        status,
+        notes,
+        contactDetails:contact_id ( first_name,last_name),
+        activityType:activity_type_id(type_name)
+   `
+      )
+      .eq('organization_id', org_id)
+    return activitiesData;
+
+  // return client
+  //   .from(ACTIVITY_TABLE)
+  //   .select(
+  //     ` *`,
+  //   )
+  //   .eq('organization_id', org_id);
+}
 
 export function getActivitiesType(client: Client) {
   return client.from(ACTIVITY_TYPES_TABLE).select(

@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useTransition } from 'react';
-
 import { ColumnDef } from '@tanstack/react-table';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import {
@@ -16,50 +15,63 @@ import {
 import DataTable from '~/core/ui/DataTable';
 import IconButton from '~/core/ui/IconButton';
 
-
 import Modal from '~/core/ui/Modal';
 import Button from '~/core/ui/Button';
-import { Contact } from '~/lib/contact/types/type';
-import { deleteTaskAction } from '~/lib/contact/actions';
+import { Activity } from '~/lib/activity/types/type';
 
-const TABLE_COLUMNS: ColumnDef<Contact>[] = [
+const TABLE_COLUMNS: ColumnDef<Activity>[] = [
   {
     header: 'Name',
     cell: ({ row }) => {
-      const contact = row.original;
+      const activity = row.original;
 
       return (
-        <Link className={'hover:underline'} href={'contact/' + contact.id}>
-          {contact.first_name} {contact.last_name}
+        <Link className={'hover:underline'} href={'activity/' + activity.id}>
+          {activity.contactDetails?.first_name}{' '}
+          {activity.contactDetails?.last_name}
         </Link>
       );
     },
   },
   {
-    header: 'Email',
-    id: 'email',
+    header: 'Task Type',
     cell: ({ row }) => {
-      const contact = row.original;
-      
+      const activity = row.original;
+
+      return <span>{activity.activityType?.type_name}</span>;
+    },
+  },
+  {
+    header: 'Subject',
+    cell: ({ row }) => {
+      const activity = row.original;
+
+      return <span>{activity.subject}</span>;
+    },
+  },
+  {
+    header: 'Status',
+    id: 'status',
+    cell: ({ row }) => {
+      const activity = row.original;
 
       return (
         <span className={'truncate max-w-[50px]'}>
-          { contact.email || '-'}
+          {activity.status || '-'}
         </span>
       );
     },
   },
   {
-    header: 'Designation',
-    id: 'designation',
+    header: 'Due Date',
+    id: 'dueDate',
     cell: ({ row }) => {
-      const contact = row.original;
+      const activity = row.original;
 
       return (
-       
         <span className={'truncate max-w-[50px]'}>
-        {contact.designation || '-'}
-      </span>
+          {activity.due_date || '-'}
+        </span>
       );
     },
   },
@@ -67,7 +79,7 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
     header: '',
     id: 'actions',
     cell: ({ row }) => {
-      const contact = row.original;
+      const activity = row.original;
       return (
         <div className={'flex justify-end'}>
           <DropdownMenu>
@@ -82,9 +94,9 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
               }}
             >
               <DropdownMenuItem>
-                <Link href={'contact/' + row.original.id}>View Contact</Link>
+                <Link href={'activity/' + row.original.id}>Edit Activity</Link>
               </DropdownMenuItem>
-              <DeleteTaskMenuItem contact={contact} />
+              <DeleteTaskMenuItem activity={activity} />
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -95,34 +107,29 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
 
 function ActivityTable(
   props: React.PropsWithChildren<{
-    contacts: Contact[];
+    activities: Activity[];
   }>,
 ) {
   const router = useRouter();
   const pathname = usePathname();
 
-  return (
-    <DataTable
-      data={props.contacts}
-      columns={TABLE_COLUMNS}
-    />
-  );
+  return <DataTable data={props.activities} columns={TABLE_COLUMNS} />;
 }
 
-function DeleteTaskMenuItem({ contact }: { contact: Contact }) {
+function DeleteTaskMenuItem({ activity }: { activity: Activity }) {
   const [, startTransition] = useTransition();
 
   return (
     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
       <ConfirmDeleteTaskModal
-        contact={contact}
+        activity={activity}
         onConfirm={() => {
           startTransition(async () => {
-            await deleteTaskAction({ contactId: contact.id });
+            // await deleteTaskAction({ activityId: activity.id });
           });
         }}
       >
-        <span className={'text-red-500'}>Delete Contact</span>
+        <span className={'text-red-500'}>Delete Activity</span>
       </ConfirmDeleteTaskModal>
     </DropdownMenuItem>
   );
@@ -131,25 +138,23 @@ function DeleteTaskMenuItem({ contact }: { contact: Contact }) {
 function ConfirmDeleteTaskModal({
   children,
   onConfirm,
-  contact,
+  activity,
 }: React.PropsWithChildren<{
-  contact: Contact;
+  activity: Activity;
   onConfirm: () => void;
 }>) {
   return (
-    <Modal heading={`Deleting Contact`} Trigger={children}>
+    <Modal heading={`Deleting Activity`} Trigger={children}>
       <div className={'flex flex-col space-y-4'}>
         <div className={'text-sm flex flex-col space-y-2'}>
-          <p>
-            You are about to delete the Contact <b>{contact.first_name} {contact.last_name}</b>
-          </p>
+          <p>You are about to delete this activity.</p>
 
           <p>Do you want to continue?</p>
         </div>
 
         <div className={'flex justify-end space-x-2'}>
           <Button variant={'destructive'} onClick={onConfirm}>
-            Yep, delete {contact.first_name} {contact.last_name}
+            Yes, Delete
           </Button>
         </div>
       </div>
