@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import Label from '~/core/ui/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/core/ui/Select';
 
-const DealStageTypeSelect = ({ activitiesType, onSelectActivityType }: any) => {
-  const contactOptions = activitiesType.map((activity: { activity_type_id: number; type_name: string; }) => ({
-    label: `${activity.type_name}`,
-    value: activity.activity_type_id.toString(),
+const DealStageTypeSelect = ({ dealStageType, onSelectdealstageType }: any) => {
+  const contactOptions = dealStageType.map((dealstagetype: { deal_stage_id: number; stage_name: string; }) => ({
+    label: `${dealstagetype.stage_name}`,
+    value: dealstagetype.deal_stage_id.toString(),
   }));
 
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(undefined);
 
   const handleStatusChange = (value: string) => {
     setSelectedStatus(value);
-    onSelectActivityType(value); 
+    onSelectdealstageType(value); 
   };
 
   return (

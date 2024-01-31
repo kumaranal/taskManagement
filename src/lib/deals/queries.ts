@@ -1,6 +1,7 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '~/database.types';
 import {
+  ACTIVITY_TABLE,
   ACTIVITY_TYPES_TABLE,
   CONTACT_TABLE,
   DEALS_STAGE_TABLE,
@@ -10,37 +11,33 @@ import {
 
 type Client = SupabaseClient<Database>;
 
-// export async function getContacts(client: Client, organization_id: string) {
-//   const data = await client
-//     .from(ORGANIZATIONS_TABLE)
-//     .select(`id`)
-//     .eq(`uuid`, organization_id)
-//     .single();
+export async function getDealsData(client: Client, organization_id: string) {
+  const data = await client
+    .from(ORGANIZATIONS_TABLE)
+    .select(`id`)
+    .eq(`uuid`, organization_id)
+    .single();
 
-//   const org_id=data.data?.id;
+    const org_id = data.data?.id;
 
-//   return client
-//     .from(CONTACT_TABLE)
-//     .select(
-//       ` id,
-//       first_name,
-//       organizationId: organization_id,
-//       last_name,
-//       email,
-//       phone,
-//       designation,
-//       linkedin_profile`,
-//     )
-//     .eq('organization_id', org_id);
-// }
-
-export function getDealsData(client: Client) {
-  return client.from(DEALS_TABLE).select(
-    `*`,
-  );
+    const dealsData = await client
+      .from(DEALS_TABLE)
+      .select(
+        `id,
+        organization_id,
+        deal_value,
+        expected_close_date,
+        contact_id:contact_id ( first_name,last_name),
+        deal_owner:deal_owner(first_name,last_name),
+        deal_stage_id:deal_stage_id(stage_name)
+   `
+      )
+      .eq('organization_id', org_id)
+      console.log("dealsData",dealsData.data)
+    return dealsData;
 }
 
-export function getDealsTypeData(client: Client) {
+export function getDealsStageType(client: Client) {
   return client.from(DEALS_STAGE_TABLE).select(
     `*`,
   );

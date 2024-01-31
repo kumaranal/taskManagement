@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useCallback, useTransition } from 'react';
-
 import { ColumnDef } from '@tanstack/react-table';
 import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import {
@@ -16,64 +15,81 @@ import {
 import DataTable from '~/core/ui/DataTable';
 import IconButton from '~/core/ui/IconButton';
 
-
 import Modal from '~/core/ui/Modal';
 import Button from '~/core/ui/Button';
-import { Contact } from '~/lib/contact/types/type';
-import { deleteTaskAction } from '~/lib/contact/actions';
+import { Activity } from '~/lib/activity/types/type';
+import { Deals } from '~/lib/deals/types/type';
+import { deleteDeals } from '~/lib/deals/mutation';
+import { deleteDealAction } from '~/lib/deals/action';
 
-const TABLE_COLUMNS: ColumnDef<Contact>[] = [
+const TABLE_COLUMNS: ColumnDef<Deals>[] = [
   {
-    header: 'Name',
+    header: 'Emp Contact',
     cell: ({ row }) => {
-      const contact = row.original;
-
+      const deals = row.original;
       return (
-        <Link className={'hover:underline'} href={'contact/' + contact.id}>
-          {contact.first_name} {contact.last_name}
+        <Link className={'hover:underline'} href={'deals/' + deals.id}>
+          {deals.contact_id?.first_name}{' '}
+          {deals.contact_id?.last_name}
         </Link>
       );
     },
   },
   {
-    header: 'Email',
-    id: 'email',
+    header: 'Owner Contact',
     cell: ({ row }) => {
-      const contact = row.original;
-      
+      const deals = row.original;
 
       return (
-        <span className={'truncate max-w-[50px]'}>
-          { contact.email || '-'}
+        <span>
+          {deals.deal_owner?.first_name}{' '}
+          {deals.deal_owner?.last_name}
+          </span>
+      );
+    },
+  },
+  {
+    header: 'Deal Value',
+    cell: ({ row }) => {
+      const deals = row.original;
+
+      return <span>{deals.deal_value}</span>;
+    },
+  },
+  {
+    header: 'Expected Close Date',
+    cell: ({ row }) => {
+      const deals = row.original;
+
+      return <span>{deals.expected_close_date}</span>;
+    },
+  },
+  {
+    header: 'Status',
+    id: 'status',
+    cell: ({ row }) => {
+      const deals = row.original;
+
+      return (
+        <span >
+          {deals.deal_stage_id?.stage_name}
         </span>
       );
     },
   },
   {
-    header: 'Designation',
-    id: 'designation',
-    cell: ({ row }) => {
-      const contact = row.original;
-
-      return (
-       
-        <span className={'truncate max-w-[50px]'}>
-        {contact.designation || '-'}
-      </span>
-      );
-    },
-  },
-  {
-    header: '',
+    header: 'Action',
     id: 'actions',
     cell: ({ row }) => {
-      const contact = row.original;
+      const deals = row.original;
+      console.log("deals",deals)
+
       return (
-        <div className={'flex justify-end'}>
+        <div className={'flex justify-start'}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <IconButton>
-                <EllipsisVerticalIcon className="w-5" />
+                <EllipsisVerticalIcon className="w-6" />
               </IconButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -82,9 +98,9 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
               }}
             >
               <DropdownMenuItem>
-                <Link href={'contact/' + row.original.id}>View Contact</Link>
+                <Link href={'activity/' + row.original.id}>Edit Activity</Link>
               </DropdownMenuItem>
-              <DeleteTaskMenuItem contact={contact} />
+              <DeleteTaskMenuItem dealsdata={deals} />
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -93,36 +109,31 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
   },
 ];
 
-function ActivityTable(
+function DealsTable(
   props: React.PropsWithChildren<{
-    contacts: Contact[];
+    deals: Deals[];
   }>,
 ) {
   const router = useRouter();
   const pathname = usePathname();
 
-  return (
-    <DataTable
-      data={props.contacts}
-      columns={TABLE_COLUMNS}
-    />
-  );
+  return <DataTable data={props.deals} columns={TABLE_COLUMNS} />;
 }
 
-function DeleteTaskMenuItem({ contact }: { contact: Contact }) {
+function DeleteTaskMenuItem({ deals }: { deals: Deals }) {
   const [, startTransition] = useTransition();
 
   return (
     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
       <ConfirmDeleteTaskModal
-        contact={contact}
+        dealsdata={deals}
         onConfirm={() => {
           startTransition(async () => {
-            await deleteTaskAction({ contactId: contact.id });
+              await deleteDealAction({ dealsdataId: dealsdata.id });
           });
         }}
       >
-        <span className={'text-red-500'}>Delete Contact</span>
+        <span className={'text-red-500'}>Delete Activity</span>
       </ConfirmDeleteTaskModal>
     </DropdownMenuItem>
   );
@@ -131,25 +142,23 @@ function DeleteTaskMenuItem({ contact }: { contact: Contact }) {
 function ConfirmDeleteTaskModal({
   children,
   onConfirm,
-  contact,
+  deals,
 }: React.PropsWithChildren<{
-  contact: Contact;
+  deals: Deals;
   onConfirm: () => void;
 }>) {
   return (
-    <Modal heading={`Deleting Contact`} Trigger={children}>
+    <Modal heading={`Deleting Activity`} Trigger={children}>
       <div className={'flex flex-col space-y-4'}>
         <div className={'text-sm flex flex-col space-y-2'}>
-          <p>
-            You are about to delete the Contact <b>{contact.first_name} {contact.last_name}</b>
-          </p>
+          <p>You are about to delete this deals's data.</p>
 
           <p>Do you want to continue?</p>
         </div>
 
         <div className={'flex justify-end space-x-2'}>
           <Button variant={'destructive'} onClick={onConfirm}>
-            Yep, delete {contact.first_name} {contact.last_name}
+            Yes, Delete
           </Button>
         </div>
       </div>
@@ -157,4 +166,4 @@ function ConfirmDeleteTaskModal({
   );
 }
 
-export default ActivityTable;
+export default DealsTable;
