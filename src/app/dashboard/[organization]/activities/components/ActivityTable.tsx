@@ -76,16 +76,16 @@ const TABLE_COLUMNS: ColumnDef<Activity>[] = [
     },
   },
   {
-    header: '',
+    header: 'Action',
     id: 'actions',
     cell: ({ row }) => {
       const activity = row.original;
       return (
-        <div className={'flex justify-end'}>
+        <div className={'flex'}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <IconButton>
-                <EllipsisVerticalIcon className="w-5" />
+                <EllipsisVerticalIcon className="w-10" />
               </IconButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -94,7 +94,7 @@ const TABLE_COLUMNS: ColumnDef<Activity>[] = [
               }}
             >
               <DropdownMenuItem>
-                <Link href={'activity/' + row.original.id}>Edit Activity</Link>
+                <Link href={'activities/' + row.original.id}>Edit Activity</Link>
               </DropdownMenuItem>
               <DeleteTaskMenuItem activity={activity} />
             </DropdownMenuContent>
