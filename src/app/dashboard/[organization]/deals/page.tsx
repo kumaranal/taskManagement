@@ -11,11 +11,8 @@ import Modal from '~/core/ui/Modal';
 import { Contact } from '~/lib/contact/types/type';
 import { getContacts } from '~/lib/contact/queries';
 import getSupabaseServerClient from '~/core/supabase/server-component-client';
-import ActivityForm from './components/DealForm';
-import { getActivitiesType } from '~/lib/activity/queries';
 import DealForm from './components/DealForm';
 import {  getDeals, getDealsData, getDealsStageType, } from '~/lib/deals/queries';
-import { collectGenerateParams } from 'next/dist/build/utils';
 import DealsTable from './components/DealsTable';
 import { Deals } from '~/lib/deals/types/type';
 

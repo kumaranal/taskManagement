@@ -18,10 +18,10 @@ const DealStageTypeSelect = ({ dealStageType, onSelectdealstageType,currentdata 
 
   return (
     <Label>
-      Select activity type from list
+      Select deals stage type from list
       <Select value={selectedStatus} onValueChange={handleStatusChange} required>
         <SelectTrigger data-cy={'role-selector-trigger'}>
-          <SelectValue placeholder={"Please select an activity type from the list"} />
+          <SelectValue placeholder={"Please select a deals stage type from the list"} />
         </SelectTrigger>
         <SelectContent className='max-h-60'>
           {contactOptions.map((option: { value: string; label: string }) => (

@@ -13,11 +13,6 @@ export interface Deals{
     };
     deal_value?: number;
     expected_close_date?:string;
-    deal_owner?:number|{
-        id?:number
-        last_name?:string
-        first_name?:string
-    };
 
 }
 

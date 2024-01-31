@@ -28,7 +28,6 @@ export async function getDealsData(client: Client, organization_id: string) {
         deal_value,
         expected_close_date,
         contact_id:contact_id ( first_name,last_name),
-        deal_owner:deal_owner(first_name,last_name),
         deal_stage_id:deal_stage_id(stage_name)
    `
       )
@@ -53,7 +52,6 @@ export async function getDealsByID(client: Client, id: number) {
       deal_value,
       expected_close_date,
       contact_id:contact_id ( id,first_name,last_name),
-      deal_owner:deal_owner(id,first_name,last_name),
       deal_stage_id:deal_stage_id(deal_stage_id,stage_name)
     `,
     )

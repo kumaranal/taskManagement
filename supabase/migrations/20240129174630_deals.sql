@@ -12,7 +12,6 @@ CREATE TABLE deals (
     deal_stage_id INT REFERENCES deal_stages(deal_stage_id),
     deal_value DECIMAL,
     expected_close_date DATE,
-    deal_owner INT REFERENCES contact(id),
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );

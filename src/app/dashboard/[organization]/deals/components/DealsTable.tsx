@@ -36,19 +36,6 @@ const TABLE_COLUMNS: ColumnDef<Deals>[] = [
     },
   },
   {
-    header: 'Owner Contact',
-    cell: ({ row }) => {
-      const deals = row.original;
-
-      return (
-        <span>
-          {deals.deal_owner?.first_name}{' '}
-          {deals.deal_owner?.last_name}
-          </span>
-      );
-    },
-  },
-  {
     header: 'Deal Value',
     cell: ({ row }) => {
       const deals = row.original;
@@ -97,7 +84,7 @@ const TABLE_COLUMNS: ColumnDef<Deals>[] = [
               }}
             >
               <DropdownMenuItem>
-                <Link href={'deals/' + row.original.id}>Edit Activity</Link>
+                <Link href={'deals/' + row.original.id}>Edit deal</Link>
               </DropdownMenuItem>
               <DeleteTaskMenuItem deals={deals} />
             </DropdownMenuContent>
@@ -132,7 +119,7 @@ function DeleteTaskMenuItem({ deals }: { deals: Deals }) {
           });
         }}
       >
-        <span className={'text-red-500'}>Delete Activity</span>
+        <span className={'text-red-500'}>Delete deal</span>
       </ConfirmDeleteTaskModal>
     </DropdownMenuItem>
   );
@@ -148,7 +135,7 @@ function ConfirmDeleteTaskModal({
     <Modal heading={`Deleting Activity`} Trigger={children}>
       <div className={'flex flex-col space-y-4'}>
         <div className={'text-sm flex flex-col space-y-2'}>
-          <p>You are about to delete this deals's data.</p>
+          <p>You are about to delete this deals data.</p>
 
           <p>Do you want to continue?</p>
         </div>

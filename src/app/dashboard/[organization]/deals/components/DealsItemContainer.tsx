@@ -1,12 +1,9 @@
 'use client';
 
 import { FormEventHandler, useCallback, useState, useTransition } from 'react';
-import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import Button from '~/core/ui/Button';
-import Heading from '~/core/ui/Heading';
-import TextField, { TextFieldInput, TextFieldLabel } from '~/core/ui/TextField';
+import TextField from '~/core/ui/TextField';
 import { Contact } from '~/lib/contact/types/type';
-import { updateContactAction } from '~/lib/contact/actions';
 import { DealStageType, Deals } from '~/lib/deals/types/type';
 import ContactSelect from './ContactSelect';
 import DealStageTypeSelect from './DealStageTypeSelect';
@@ -19,9 +16,8 @@ const DealsItemContainer: React.FC<{
   console.log("deals data", deals)
   const dealId=deals.id
    const [isMutating, startTransition] = useTransition();
-   const [deal_owner, setDealowner] = useState(deals.deal_owner.id);
-   const [contact_id, setSelectedContact] = useState(deals.contact_id.id);
-   const [deal_stage_id, setdealstagetype] = useState(deals.deal_stage_id.deal_stage_id);
+   const [contact_id, setSelectedContact] = useState(deals.contact_id?.id);
+   const [deal_stage_id, setdealstagetype] = useState(deals.deal_stage_id?.deal_stage_id);
 
 
    const onDealUpdate: FormEventHandler<HTMLFormElement> = useCallback(
@@ -39,7 +35,6 @@ const DealsItemContainer: React.FC<{
         deal_stage_id,
         deal_value,
         expected_close_date,
-        deal_owner
       };
 
 
@@ -47,7 +42,7 @@ const DealsItemContainer: React.FC<{
         await updateDealAction({ deals });
       });
     },
-    [deal_owner,contact_id,deal_stage_id],
+    [contact_id, dealId, deal_stage_id, organization],
   );
 
 
@@ -55,13 +50,13 @@ const DealsItemContainer: React.FC<{
     <form className={'flex flex-col'} onSubmit={onDealUpdate}>
       <div className={'flex flex-col space-y-4 w-full'}>
         <ContactSelect
-          contacts={contacts} currentdata={deals.contact_id.id}
+          contacts={contacts} currentdata={deals.contact_id?.id}
           onSelectContact={(value: any) =>
             setSelectedContact(value)
           }
         />
         <DealStageTypeSelect
-          dealStageType={dealStageType} currentdata={deals.deal_stage_id.deal_stage_id}
+          dealStageType={dealStageType} currentdata={deals.deal_stage_id?.deal_stage_id}
           onSelectdealstageType={(value: any) => setdealstagetype(value)}
         />
 
@@ -80,12 +75,6 @@ const DealsItemContainer: React.FC<{
           <TextField.Input name={'dueDate'} type={'date'} defaultValue={deals.expected_close_date} />
         </TextField.Label>
 
-        <ContactSelect
-          contacts={contacts} currentdata={deals.deal_owner.id}
-          onSelectContact={(value: any) =>
-            setDealowner(value)
-          }
-        />
 
         <div className={'flex justify-end'}>
           <Button loading={isMutating}>

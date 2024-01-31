@@ -6,24 +6,12 @@ import TextField from '~/core/ui/TextField';
 import Button from '~/core/ui/Button';
 import If from '~/core/ui/If';
 import useCurrentOrganization from '~/lib/organizations/hooks/use-current-organization';
-import Label from '~/core/ui/Label';
-import Textarea from '~/core/ui/Textarea';
-import {
-  Select,
-  SelectItem,
-  SelectContent,
-  SelectTrigger,
-  SelectValue,
-} from '~/core/ui/Select';
 import ContactSelect from './ContactSelect';
-import ActivityTypeSelect from './DealStageTypeSelect';
-import StatusSelect from './StatusSelect';
 import DealStageTypeSelect from './DealStageTypeSelect';
 import { createDealsAction } from '~/lib/deals/action';
 
 const DealForm: React.FC = ({ contacts, dealStageType }: any) => {
   const [isMutating, startTransition] = useTransition();
-  const [deal_owner, setDealowner] = useState();
   const [contact_id, setSelectedContact] = useState();
   const [deal_stage_id, setdealstagetype] = useState();
   const organization = useCurrentOrganization();
@@ -43,16 +31,21 @@ const DealForm: React.FC = ({ contacts, dealStageType }: any) => {
         deal_stage_id,
         deal_value,
         expected_close_date,
-        deal_owner
       };
 
       startTransition(async () => {
         await createDealsAction({ deals });
       });
     },
-    [organization_id,deal_owner,contact_id,deal_stage_id],
+    [organization_id,contact_id,deal_stage_id],
   );
-
+  const handleKeyDown = (event:any) => {
+    const keyCode = event.key;
+    // Allow only numeric characters and backspace
+    if ((isNaN(keyCode) || keyCode === ' ') && keyCode !== 'Backspace'  && keyCode!=='Tab') {
+      event.preventDefault();
+    }
+  };
   return (
     <form className={'flex flex-col'} onSubmit={onDealCreate}>
       <div className={'flex flex-col space-y-4 w-full'}>
@@ -73,21 +66,18 @@ const DealForm: React.FC = ({ contacts, dealStageType }: any) => {
             required
             name={'dealValue'}
             placeholder={'Add deal value here..'}
+            autoComplete='off'
+            onKeyDown={handleKeyDown}
           />
         </TextField.Label>
 
         <TextField.Label>
-          Expected Close date
+          Expected Close date(optional)
           <TextField.Input name={'dueDate'} type={'date'} />
+          <TextField.Hint>
+            Leave empty to set the due date to tomorrow
+          </TextField.Hint>
         </TextField.Label>
-
-        <ContactSelect
-          contacts={contacts}
-          onSelectContact={(value: any) =>
-            setDealowner(value)
-          }
-        />
-
         <div className={'flex justify-end'}>
           <Button loading={isMutating}>
             <If condition={isMutating} fallback={<>Create Deals</>}>

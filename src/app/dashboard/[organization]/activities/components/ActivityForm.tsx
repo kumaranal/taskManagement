@@ -12,8 +12,14 @@ import ContactSelect from './ContactSelect';
 import ActivityTypeSelect from './ActivityTypeSelect';
 import StatusSelect from './StatusSelect';
 import { createActivityAction } from '~/lib/activity/action';
+import { Contact } from '~/lib/contact/types/type';
+interface ActivityFormPropTypes{
+  contacts:Contact[];
+  activitiesType:any
+  
+}
 
-const ActivityForm: React.FC = ({ contacts, activitiesType }: any) => {
+const ActivityForm: React.FC<ActivityFormPropTypes> = ({ contacts, activitiesType }) => {
   const [isMutating, startTransition] = useTransition();
   const [status, setStatus] = useState();
   const [selectedContact, setSelectedContact] = useState();

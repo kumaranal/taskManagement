@@ -1,4 +1,4 @@
-import type { SupabaseClient } from '@supabase/supabase-js';
+import type { PostgrestError, SupabaseClient } from '@supabase/supabase-js';
 import type { Database } from '~/database.types';
 import { CONTACT_TABLE } from '~/lib/db-tables';
 import { Contact } from './types/type';
@@ -34,12 +34,18 @@ export function updateContact(
     })
     .throwOnError();
 }
-export function deleteContact(client: Client, contactId: number) {
-  return client
-    .from(CONTACT_TABLE)
-    .delete()
-    .match({
-      id: contactId,
-    })
-    .throwOnError();
+export async function deleteContact(client: Client, contactId: number) {
+  try {
+    const { data } = await client
+      .from(CONTACT_TABLE)
+      .delete()
+      .match({
+        id: contactId,
+      })
+      .throwOnError();
+    return data;
+  } catch (error:any) {
+   return error.message;
+  }
 }
+

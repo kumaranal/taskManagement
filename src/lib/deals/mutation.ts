@@ -12,9 +12,8 @@ export function createDeals(client: Client, deals: Omit<Deals, 'id'>) {
     contact_id: deals.contact_id,
     deal_stage_id: deals.deal_stage_id,
     deal_value: deals.deal_value,
-    deal_owner: deals.deal_owner,
-    expected_close_date:deals.expected_close_date
-  });
+    expected_close_date:deals.expected_close_date || ""
+  })
 }
 
 export function updateDeals(
@@ -28,15 +27,12 @@ export function updateDeals(
         contact_id: Number(deals.contact_id),
         deal_stage_id: Number(deals.deal_stage_id),
         deal_value: Number(deals.deal_value),
-        deal_owner: Number(deals.deal_owner),
         expected_close_date:deals.expected_close_date
     })
     .match({
       id: deals.id,
     })
     .throwOnError();
-    console.log("data actions",data)
-
     return data;
 }
 

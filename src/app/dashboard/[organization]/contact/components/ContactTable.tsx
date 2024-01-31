@@ -16,11 +16,11 @@ import {
 import DataTable from '~/core/ui/DataTable';
 import IconButton from '~/core/ui/IconButton';
 
-
 import Modal from '~/core/ui/Modal';
 import Button from '~/core/ui/Button';
 import { Contact } from '~/lib/contact/types/type';
 import { deleteTaskAction } from '~/lib/contact/actions';
+import { toast } from 'sonner';
 
 const TABLE_COLUMNS: ColumnDef<Contact>[] = [
   {
@@ -40,10 +40,8 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
     id: 'email',
     cell: ({ row }) => {
       const contact = row.original;
-            return (
-        <span className={'truncate max-w-[50px]'}>
-          { contact.email || '-'}
-        </span>
+      return (
+        <span className={'truncate max-w-[50px]'}>{contact.email || '-'}</span>
       );
     },
   },
@@ -52,10 +50,8 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
     id: 'contact',
     cell: ({ row }) => {
       const contact = row.original;
-            return (
-        <span className={'truncate max-w-[50px]'}>
-          { contact.phone || '-'}
-        </span>
+      return (
+        <span className={'truncate max-w-[50px]'}>{contact.phone || '-'}</span>
       );
     },
   },
@@ -66,10 +62,9 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
       const contact = row.original;
 
       return (
-       
         <span className={'truncate max-w-[50px]'}>
-        {contact.designation || '-'}
-      </span>
+          {contact.designation || '-'}
+        </span>
       );
     },
   },
@@ -92,7 +87,7 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
               }}
             >
               <DropdownMenuItem>
-                <Link href={'contact/' + row.original.id}>View Contact</Link>
+                <Link href={'contact/' + row.original.id}>Edit Contact</Link>
               </DropdownMenuItem>
               <DeleteTaskMenuItem contact={contact} />
             </DropdownMenuContent>
@@ -111,12 +106,7 @@ function ContactTable(
   const router = useRouter();
   const pathname = usePathname();
 
-  return (
-    <DataTable
-      data={props.contacts}
-      columns={TABLE_COLUMNS}
-    />
-  );
+  return <DataTable data={props.contacts} columns={TABLE_COLUMNS} />;
 }
 
 function DeleteTaskMenuItem({ contact }: { contact: Contact }) {
@@ -128,7 +118,13 @@ function DeleteTaskMenuItem({ contact }: { contact: Contact }) {
         contact={contact}
         onConfirm={() => {
           startTransition(async () => {
-            await deleteTaskAction({ contactId: contact.id });
+            const data = await deleteTaskAction({ contactId: contact.id });
+            if(data){
+              toast.error(data)
+            }
+            else{
+              toast.success("Contact detected successfully")
+            }
           });
         }}
       >
@@ -151,7 +147,10 @@ function ConfirmDeleteTaskModal({
       <div className={'flex flex-col space-y-4'}>
         <div className={'text-sm flex flex-col space-y-2'}>
           <p>
-            You are about to delete the Contact <b>{contact.first_name} {contact.last_name}</b>
+            You are about to delete the Contact{' '}
+            <b>
+              {contact.first_name} {contact.last_name}
+            </b>
           </p>
 
           <p>Do you want to continue?</p>

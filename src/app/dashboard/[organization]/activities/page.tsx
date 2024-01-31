@@ -39,7 +39,6 @@ const ContactPage = ({ params }: ActivityPageParams) => {
         <If condition={!activities.length}>
           <ActivityEmptyState />
         </If>
-
         <ActivityTableContainer activities={activities} contacts={contacts} activitiesType={activitiesType} />
       </PageBody>
     </div>

@@ -2,7 +2,6 @@ import { headers } from 'next/headers';
 import { permanentRedirect } from 'next/navigation';
 import Image from 'next/image';
 import { ChevronRightIcon } from '@heroicons/react/24/outline';
-
 import { getOrganizationsByUserId } from '~/lib/organizations/database/queries';
 import getSupabaseServerComponentClient from '~/core/supabase/server-component-client';
 import requireSession from '~/lib/user/require-session';
@@ -11,14 +10,12 @@ import getLanguageCookie from '~/i18n/get-language-cookie';
 import getCurrentOrganization from '~/lib/server/organizations/get-current-organization';
 import { parseOrganizationIdCookie } from '~/lib/server/cookies/organization.cookie';
 import NewOrganizationButtonContainer from './components/NewOrganizationButtonContainer';
-
 import LogoImage from '~/core/ui/Logo/LogoImage';
 import Container from '~/core/ui/Container';
 import If from '~/core/ui/If';
 import CardButton from '~/core/ui/CardButton';
 import Trans from '~/core/ui/Trans';
 import { PageBody, PageHeader } from '~/core/ui/Page';
-
 import configuration from '~/configuration';
 import I18nProvider from '~/i18n/I18nProvider';
 import { getUserById } from '~/lib/user/database/queries';

@@ -8,6 +8,7 @@ import { parseOrganizationIdCookie } from '~/lib/server/cookies/organization.coo
 import requireSession from '~/lib/user/require-session';
 import { Contact } from './types/type';
 import { createContact, deleteContact, updateContact } from './mutations';
+import { toast } from 'sonner';
 
 type CreateContactParams = {
   contact: Omit<Contact, 'id'>;
@@ -58,7 +59,11 @@ export const deleteTaskAction = withSession(
     const session = await requireSession(client);
     const uid = await parseOrganizationIdCookie(session.user.id);
     const path = `/dashboard/${uid}/contact`;
-    await deleteContact(client, params.contactId);
+    const data = await deleteContact(client, params.contactId);
     revalidatePath(path, 'page');
+    if (data == null) {
+      redirect(path);
+    }
+    return data;
   },
 );

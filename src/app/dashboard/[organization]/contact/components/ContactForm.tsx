@@ -26,12 +26,7 @@ const ContactForm: React.FC = () => {
       const linkedin_profile = data.get('linkedin') as string;
       const designation = data.get('designation') as string;
 
-      // if (first_name.trim().length < 3) {
-      //   toast.error('Task name must be at least 3 characters long');
-
-      //   return;
-      // }
-
+    
       const contact = {
         organizationId,
         first_name,
@@ -51,7 +46,7 @@ const ContactForm: React.FC = () => {
   const handleKeyDown = (event:any) => {
     const keyCode = event.key;
     // Allow only numeric characters and backspace
-    if ((isNaN(keyCode) || keyCode === ' ') && keyCode !== 'Backspace') {
+    if ((isNaN(keyCode) || keyCode === ' ') && keyCode !== 'Backspace'  && keyCode!=='Tab') {
       event.preventDefault();
     }
   };
@@ -81,6 +76,7 @@ const ContactForm: React.FC = () => {
             name={'phone'}
             type="text"
             placeholder={'ex. 58787878787'}
+            autoComplete='off'
             onKeyDown={handleKeyDown}
             title="Please enter only numeric characters."
           />
