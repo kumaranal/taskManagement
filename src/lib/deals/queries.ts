@@ -33,7 +33,7 @@ export async function getDealsData(client: Client, organization_id: string) {
    `
       )
       .eq('organization_id', org_id)
-      console.log("dealsData",dealsData.data)
+      // console.log("dealsData",dealsData.data)
     return dealsData;
 }
 
@@ -42,3 +42,24 @@ export function getDealsStageType(client: Client) {
     `*`,
   );
 }
+
+export async function getDealsByID(client: Client, id: number) {
+  const dealsData= client
+    .from(DEALS_TABLE)
+    .select(
+      
+      `id,
+      organization_id,
+      deal_value,
+      expected_close_date,
+      contact_id:contact_id ( id,first_name,last_name),
+      deal_owner:deal_owner(id,first_name,last_name),
+      deal_stage_id:deal_stage_id(deal_stage_id,stage_name)
+    `,
+    )
+    .eq('id', id)
+    .single();
+      console.log("dealsdat api",dealsData)
+    return dealsData;
+}
+

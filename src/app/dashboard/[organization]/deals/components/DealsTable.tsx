@@ -82,7 +82,6 @@ const TABLE_COLUMNS: ColumnDef<Deals>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const deals = row.original;
-      console.log("deals",deals)
 
       return (
         <div className={'flex justify-start'}>
@@ -98,9 +97,9 @@ const TABLE_COLUMNS: ColumnDef<Deals>[] = [
               }}
             >
               <DropdownMenuItem>
-                <Link href={'activity/' + row.original.id}>Edit Activity</Link>
+                <Link href={'deals/' + row.original.id}>Edit Activity</Link>
               </DropdownMenuItem>
-              <DeleteTaskMenuItem dealsdata={deals} />
+              <DeleteTaskMenuItem deals={deals} />
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -126,10 +125,10 @@ function DeleteTaskMenuItem({ deals }: { deals: Deals }) {
   return (
     <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
       <ConfirmDeleteTaskModal
-        dealsdata={deals}
         onConfirm={() => {
           startTransition(async () => {
-              await deleteDealAction({ dealsdataId: dealsdata.id });
+            // console.log("id",deals.id)
+              await deleteDealAction({ dealsdataId: deals.id});
           });
         }}
       >
@@ -142,9 +141,7 @@ function DeleteTaskMenuItem({ deals }: { deals: Deals }) {
 function ConfirmDeleteTaskModal({
   children,
   onConfirm,
-  deals,
 }: React.PropsWithChildren<{
-  deals: Deals;
   onConfirm: () => void;
 }>) {
   return (

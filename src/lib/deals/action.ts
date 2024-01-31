@@ -14,11 +14,11 @@ type CreateDealsParams = {
 };
 
 type UpdateDealsParams = {
-  contact: Partial<Deals> & Pick<Deals, 'id'>;
+  deals: Partial<Deals> & Pick<Deals, 'id'>;
 };
 
 type DeleteDealsParams = {
-  contactId: number;
+  dealsdataId: number;
 };
 
 export const createDealsAction = withSession(
@@ -43,7 +43,7 @@ export const updateDealAction = withSession(
     const session = await requireSession(client);
     const uid = await parseOrganizationIdCookie(session.user.id);
     const path = `/dashboard/${uid}/deals`;
-    await updateDeals(client, params.contact);
+    await updateDeals(client, params.deals);
 
     // revalidate the tasks page and the task page
     revalidatePath(path, 'page');
@@ -57,7 +57,7 @@ export const deleteDealAction = withSession(
     const session = await requireSession(client);
     const uid = await parseOrganizationIdCookie(session.user.id);
     const path = `/dashboard/${uid}/deals`;
-    await deleteDeals(client, params.contactId);
+    await deleteDeals(client, params.dealsdataId);
     revalidatePath(path, 'page');
   },
 );
