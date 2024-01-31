@@ -85,7 +85,7 @@ function DealsTableContainer({
       <div className={'flex space-x-4 justify-between items-center'}>
         <div className={'flex'}>
           <CreateDealsModal contacts={contacts} dealStageType={dealStageType}>
-            <Button variant={'ghost'}>
+            <Button >
               <span className={'flex space-x-2 items-center'}>
                 <PlusCircleIcon className={'w-4'} />
 
