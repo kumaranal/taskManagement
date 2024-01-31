@@ -29,7 +29,7 @@ const StatusSelect = ({ onSelectStatus ,defaultValue }: any) => {
   return (
     <Label>
       Status
-      <Select value={selectedStatus} onValueChange={handleStatusChange}>
+      <Select value={selectedStatus} onValueChange={handleStatusChange} >
         <SelectTrigger data-cy={'role-selector-trigger'}>
           <SelectValue />
         </SelectTrigger>

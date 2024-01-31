@@ -50,8 +50,8 @@ export function getActivity(client: Client, id: number) {
   due_date,
   status,
   notes,
-  contactDetails:contact_id ( first_name,last_name),
-  activityType:activity_type_id(type_name)
+  contactDetails:contact_id ( id,first_name,last_name),
+  activityType:activity_type_id(activity_type_id,type_name)
 `,
     )
     .eq('id', id)

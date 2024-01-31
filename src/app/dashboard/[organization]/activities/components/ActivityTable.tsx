@@ -18,6 +18,8 @@ import IconButton from '~/core/ui/IconButton';
 import Modal from '~/core/ui/Modal';
 import Button from '~/core/ui/Button';
 import { Activity } from '~/lib/activity/types/type';
+import { deleteActivity } from '~/lib/activity/mutation';
+import { deleteActivityAction } from '~/lib/activity/action';
 
 const TABLE_COLUMNS: ColumnDef<Activity>[] = [
   {
@@ -125,7 +127,7 @@ function DeleteTaskMenuItem({ activity }: { activity: Activity }) {
         activity={activity}
         onConfirm={() => {
           startTransition(async () => {
-            // await deleteTaskAction({ activityId: activity.id });
+            await deleteActivityAction({ activityId: activity.id });
           });
         }}
       >

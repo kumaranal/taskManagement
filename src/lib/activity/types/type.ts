@@ -1,5 +1,5 @@
 export interface Activity{
-    id?:number,
+    id:number,
     organizationId?: number;
     subject?: string;
     notes?: string;
@@ -10,9 +10,11 @@ export interface Activity{
     contactDetails?:{
         last_name?:string
         first_name?:string
+        id?:number
     };
     activityType?:{
         type_name?:string;
+        activity_type_id?:number;
     }
 
 }

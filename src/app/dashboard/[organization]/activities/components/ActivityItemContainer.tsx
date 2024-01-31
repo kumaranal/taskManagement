@@ -3,19 +3,25 @@
 import { FormEventHandler, useCallback, useState, useTransition } from 'react';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import Button from '~/core/ui/Button';
-import Heading from '~/core/ui/Heading';
-import TextField, { TextFieldInput, TextFieldLabel } from '~/core/ui/TextField';
+import TextField from '~/core/ui/TextField';
 import { Activity } from '~/lib/activity/types/type';
 import Label from '~/core/ui/Label';
 import Textarea from '~/core/ui/Textarea';
 import StatusSelect from './StatusSelect';
+import { updateActivityAction } from '~/lib/activity/action';
+import ContactSelect from './ContactSelect';
+import { Contact } from '~/lib/contact/types/type';
+import ActivityTypeSelect from './ActivityTypeSelect';
 
 const ActivityItemContainer: React.FC<{
   activitity: Activity;
-}> = ({ activitity }) => {
+  contacts:Contact;
+  activitiesType:any
+}> = ({ activitity ,activitiesType,contacts}) => {
   const [isMutating, startTransition] = useTransition();
   const [status, setStatus] = useState();
-
+  const [selectedContact, setSelectedContact] = useState();
+  const [activities, setActivities] = useState();
   const onUpdate: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
@@ -23,31 +29,36 @@ const ActivityItemContainer: React.FC<{
       const data = new FormData(e.currentTarget);
       const subject = data.get('subject') as string;
       const notes = data.get('notes') as string;
-      const dueDate = (data.get('dueDate') as string) || getDefaultDueDate();
+      const due_date = (data.get('dueDate') as string) || getDefaultDueDate();
+      const activity= {
+        subject,
+        status,
+        notes,
+        due_date,
+        id: activitity.id,
+        selectedContact,
+        activities  
+      }
       startTransition(async () => {
-        const activity={
-          subject,status,notes,dueDate,
-        }
-        // await updateContactAction({
-        //   contact: {
-        //     first_name,
-        //     last_name,
-        //     email,
-        //     phone,
-        //     linkedin_profile,
-        //     designation,
-        //     id: activitity.id,
-        //   },
-        // });
-        console.log("activity",activity)
+        await updateActivityAction({ activity});
       });
     },
-    [status],
+    [status, activitity, selectedContact, activities],
   );
 
   return (
     <form onSubmit={onUpdate}>
       <div className={'flex flex-col space-y-4 max-w-xl'}>
+      <ContactSelect
+          contacts={contacts}
+          onSelectContact={(value: any) => setSelectedContact(value)}
+          defaultValue={activitity.contactDetails}
+        />
+        <ActivityTypeSelect
+          activitiesType={activitiesType}
+          onSelectActivityType={(value: any) => setActivities(value)}
+          defaultValue={activitity.activityType}
+        />
         <TextField.Label>
           Subject
           <TextField.Input
