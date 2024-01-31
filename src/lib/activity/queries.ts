@@ -16,13 +16,13 @@ export async function getActivities(client: Client, organization_id: string) {
     .eq(`uuid`, organization_id)
     .single();
 
-    const org_id = data.data?.id;
+  const org_id = data.data?.id;
 
-    // Fetch activities with contact information
-    const activitiesData = await client
-      .from(ACTIVITY_TABLE)
-      .select(
-        `id,
+  // Fetch activities with contact information
+  const activitiesData = await client
+    .from(ACTIVITY_TABLE)
+    .select(
+      `id,
         organization_id,
         subject,
         due_date,
@@ -30,21 +30,30 @@ export async function getActivities(client: Client, organization_id: string) {
         notes,
         contactDetails:contact_id ( first_name,last_name),
         activityType:activity_type_id(type_name)
-   `
-      )
-      .eq('organization_id', org_id)
-    return activitiesData;
-
-  // return client
-  //   .from(ACTIVITY_TABLE)
-  //   .select(
-  //     ` *`,
-  //   )
-  //   .eq('organization_id', org_id);
+   `,
+    )
+    .eq('organization_id', org_id);
+  return activitiesData;
 }
 
 export function getActivitiesType(client: Client) {
-  return client.from(ACTIVITY_TYPES_TABLE).select(
-    `*`,
-  );
+  return client.from(ACTIVITY_TYPES_TABLE).select(`*`);
+}
+
+export function getActivity(client: Client, id: number) {
+  return client
+    .from(ACTIVITY_TABLE)
+    .select(
+      `id,
+  organization_id,
+  subject,
+  due_date,
+  status,
+  notes,
+  contactDetails:contact_id ( id,first_name,last_name),
+  activityType:activity_type_id(activity_type_id,type_name)
+`,
+    )
+    .eq('id', id)
+    .single();
 }

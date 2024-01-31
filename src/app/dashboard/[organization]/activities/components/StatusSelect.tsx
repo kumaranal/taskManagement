@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Label from '~/core/ui/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/core/ui/Select';
 
-const StatusSelect = ({ onSelectStatus }: any) => {
+const StatusSelect = ({ onSelectStatus ,defaultValue }: any) => {
   const statusOptions = [
     {
       label: "Open", value: "Open"
@@ -16,7 +16,7 @@ const StatusSelect = ({ onSelectStatus }: any) => {
   ];
 
   const defaultStatus = statusOptions[0].value;
-  const [selectedStatus, setSelectedStatus] = useState(defaultStatus);
+  const [selectedStatus, setSelectedStatus] = useState(defaultValue || defaultStatus);
 
   const handleStatusChange = (value: React.SetStateAction<string>) => {
     setSelectedStatus(value);
@@ -29,7 +29,7 @@ const StatusSelect = ({ onSelectStatus }: any) => {
   return (
     <Label>
       Status
-      <Select value={selectedStatus} onValueChange={handleStatusChange}>
+      <Select value={selectedStatus} onValueChange={handleStatusChange} >
         <SelectTrigger data-cy={'role-selector-trigger'}>
           <SelectValue />
         </SelectTrigger>

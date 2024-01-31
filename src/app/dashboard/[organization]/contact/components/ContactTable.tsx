@@ -74,12 +74,12 @@ const TABLE_COLUMNS: ColumnDef<Contact>[] = [
     },
   },
   {
-    header: '',
+    header: 'Actions',
     id: 'actions',
     cell: ({ row }) => {
       const contact = row.original;
       return (
-        <div className={'flex justify-end'}>
+        <div className={'flex '}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <IconButton>

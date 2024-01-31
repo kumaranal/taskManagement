@@ -27,7 +27,6 @@ export async function getContacts(client: Client, organization_id: string) {
       linkedin_profile`,
     )
     .eq('organization_id', org_id);
-    // console.log("data1",data1)
     return data1;
 }
 

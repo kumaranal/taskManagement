@@ -1,107 +1,98 @@
 'use client';
 
-import { FormEventHandler, useCallback, useTransition } from 'react';
+import { FormEventHandler, useCallback, useState, useTransition } from 'react';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
 import Button from '~/core/ui/Button';
-import Heading from '~/core/ui/Heading';
-import { TextFieldInput, TextFieldLabel } from '~/core/ui/TextField';
+import TextField from '~/core/ui/TextField';
+import { Activity } from '~/lib/activity/types/type';
+import Label from '~/core/ui/Label';
+import Textarea from '~/core/ui/Textarea';
+import StatusSelect from './StatusSelect';
+import { updateActivityAction } from '~/lib/activity/action';
+import ContactSelect from './ContactSelect';
 import { Contact } from '~/lib/contact/types/type';
-import { updateContactAction } from '~/lib/contact/actions';
+import ActivityTypeSelect from './ActivityTypeSelect';
 
 const ActivityItemContainer: React.FC<{
-  contact: Contact;
-}> = ({ contact }) => {
+  activitity: Activity;
+  contacts:Contact;
+  activitiesType:any
+}> = ({ activitity ,activitiesType,contacts}) => {
   const [isMutating, startTransition] = useTransition();
-
+  const [status, setStatus] = useState();
+  const [selectedContact, setSelectedContact] = useState(activitity.contactDetails?.id?.toString());
+  const [activities, setActivities] = useState(activitity.activityType?.activity_type_id?.toString());
   const onUpdate: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
 
       const data = new FormData(e.currentTarget);
-      const first_name = data.get('first_name') as string;
-      const last_name = data.get('last_name') as string;
-      const email = data.get('email') as string;
-      const phone = data.get('phone') as unknown as number;
-      const linkedin_profile = data.get('linked') as string;
-      const designation = data.get('designation') as string;
+      const subject = data.get('subject') as string;
+      const notes = data.get('notes') as string;
+      const due_date = (data.get('dueDate') as string) || getDefaultDueDate();
+      const activity= {
+        subject,
+        status,
+        notes,
+        due_date,
+        id: activitity.id,
+        selectedContact,
+        activities  
+      }
       startTransition(async () => {
-        await updateContactAction({
-          contact: {
-            first_name,
-            last_name,
-            email,
-            phone,
-            linkedin_profile,
-            designation,
-            id: contact.id,
-          },
-        });
+        await updateActivityAction({ activity});
       });
     },
-    [contact.id],
+    [status, activitity, selectedContact, activities],
   );
 
   return (
     <form onSubmit={onUpdate}>
       <div className={'flex flex-col space-y-4 max-w-xl'}>
-        <Heading type={2}>
-          {contact.first_name} {contact.last_name}
-        </Heading>
+      <ContactSelect
+          contacts={contacts}
+          onSelectContact={(value: any) => setSelectedContact(value)}
+          defaultValue={activitity.contactDetails}
+        />
+        <ActivityTypeSelect
+          activitiesType={activitiesType}
+          onSelectActivityType={(value: any) => setActivities(value)}
+          defaultValue={activitity.activityType}
+        />
+        <TextField.Label>
+          Subject
+          <TextField.Input
+            required
+            defaultValue={activitity.subject}
+            name={'subject'}
+            placeholder={'Add subject here..'}
+          />
+        </TextField.Label>
+        <Label>
+          Notes
+          <Textarea
+            name={'notes'}
+            className={'h-32'}
+            defaultValue={activitity.notes}
+            placeholder={'Add notes...'}
+          />
+            <StatusSelect onSelectStatus={(value: any) => setStatus(value)}  defaultValue={activitity.status}/>
+        </Label>
+        <TextField.Label>
+          Due date (optional)
+          <TextField.Input name={'dueDate'} type={'date'} defaultValue={activitity.due_date} />
+          <TextField.Hint>
+            Leave empty to set the due date to tomorrow
+          </TextField.Hint>
+        </TextField.Label>
 
-        <TextFieldLabel>
-          First Name
-          <TextFieldInput
-            required
-            defaultValue={contact.first_name}
-            name={'first_name'}
-          />
-        </TextFieldLabel>
-        <TextFieldLabel>
-          Last Name
-          <TextFieldInput
-            required
-            defaultValue={contact.last_name}
-            name={'last_name'}
-          />
-        </TextFieldLabel>
-        <TextFieldLabel>
-          Email
-          <TextFieldInput
-            required
-            defaultValue={contact.email}
-            name={'email'}
-          />
-        </TextFieldLabel>
-        <TextFieldLabel>
-          Contact No
-          <TextFieldInput
-            required
-            defaultValue={contact.phone}
-            name={'phone'}
-          />
-        </TextFieldLabel>
-        <TextFieldLabel>
-          Designation
-          <TextFieldInput
-            required
-            defaultValue={contact.designation}
-            name={'designation'}
-          />
-        </TextFieldLabel>
-        <TextFieldLabel>
-          Linkedin Profile
-          <TextFieldInput
-            required
-            defaultValue={contact.linkedin_profile}
-            name={'linked'}
-          />
-        </TextFieldLabel>
+    
 
         <div className={'flex space-x-2 justify-between'}>
-          <Button href={'../contact'} variant={'transparent'}>
+          <Button href={'../activities'} variant={'transparent'}>
             <span className={'flex space-x-2 items-center'}>
               <ChevronLeftIcon className={'w-4'} />
-              <span>Back to Contact</span>
+              <span>Back to Activity</span>
             </span>
           </Button>
 
@@ -111,5 +102,10 @@ const ActivityItemContainer: React.FC<{
     </form>
   );
 };
-
+function getDefaultDueDate() {
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  date.setHours(23, 59, 59);
+  return date.toDateString();
+}
 export default ActivityItemContainer;

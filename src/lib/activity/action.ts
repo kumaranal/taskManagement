@@ -6,20 +6,20 @@ import { withSession } from '~/core/generic/actions-utils';
 import getSupabaseServerActionClient from '~/core/supabase/action-client';
 import { parseOrganizationIdCookie } from '~/lib/server/cookies/organization.cookie';
 import requireSession from '~/lib/user/require-session';
-import { createActivities } from './mutation';
+import { createActivities, deleteActivity, updateActivity } from './mutation';
 import { Activity } from './types/type';
 
 type CreateContactParams = {
   activity: Omit<Activity, 'id'>;
 };
 
-// type UpdateContactParams = {
-//   contact: Partial<Contact> & Pick<Contact, 'id'>;
-// };
+type updateActivityParams = {
+  activity: Partial<Activity> & Pick<Activity, 'id'>;
+};
 
-// type DeleteContactParams = {
-//   contactId: number;
-// };
+type DeleteActivityParams = {
+  activityId: number
+};
 
 export const createActivityAction = withSession(
   async (params: CreateContactParams) => {
@@ -37,27 +37,26 @@ export const createActivityAction = withSession(
   },
 );
 
-// export const updateContactAction = withSession(
-//   async (params: UpdateContactParams) => {
-//     const client = getSupabaseServerActionClient();
-//     const session = await requireSession(client);
-//     const uid = await parseOrganizationIdCookie(session.user.id);
-//     const path = `/dashboard/${uid}/contact`;
-//     await updateContact(client, params.contact);
+export const updateActivityAction = withSession(
+  async (params: updateActivityParams) => {
+    const client = getSupabaseServerActionClient();
+    const session = await requireSession(client);
+    const uid = await parseOrganizationIdCookie(session.user.id);
+    const path = `/dashboard/${uid}/activities`;
+    await updateActivity(client, params.activity);
+    // revalidate the tasks page and the task page
+    revalidatePath(path, 'page');
+    redirect(path);
+  },
+);
 
-//     // revalidate the tasks page and the task page
-//     revalidatePath(path, 'page');
-//     redirect(path);
-//   },
-// );
-
-// export const deleteTaskAction = withSession(
-//   async (params: DeleteContactParams) => {
-//     const client = getSupabaseServerActionClient();
-//     const session = await requireSession(client);
-//     const uid = await parseOrganizationIdCookie(session.user.id);
-//     const path = `/dashboard/${uid}/contact`;
-//     await deleteContact(client, params.contactId);
-//     revalidatePath(path, 'page');
-//   },
-// );
+export const deleteActivityAction = withSession(
+  async (params: DeleteActivityParams) => {
+    const client = getSupabaseServerActionClient();
+    const session = await requireSession(client);
+    const uid = await parseOrganizationIdCookie(session.user.id);
+    const path = `/dashboard/${uid}/activities`;
+    await deleteActivity(client, params.activityId);
+    revalidatePath(path, 'page');
+  },
+);

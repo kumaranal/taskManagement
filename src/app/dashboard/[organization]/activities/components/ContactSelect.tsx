@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import Label from '~/core/ui/Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '~/core/ui/Select';
 
-const ContactSelect = ({ contacts, onSelectContact }: any) => {
+const ContactSelect = ({ contacts, onSelectContact,defaultValue }: any) => {
   const contactOptions = contacts.map((contact: { first_name: string; last_name: string; id: { toString: () => any; }; }) => ({
     label: `${contact.first_name} ${contact.last_name}`,
     value: contact.id.toString(),
   }));
 
-  const [selectedContactId, setSelectedContactId] = useState<string | undefined>(undefined);
+  const [selectedContactId, setSelectedContactId] = useState<string | undefined>(defaultValue?.id.toString());
 
   const handleContactChange = (value: string) => {
     setSelectedContactId(value);

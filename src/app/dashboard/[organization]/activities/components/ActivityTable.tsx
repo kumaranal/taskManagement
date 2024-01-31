@@ -18,6 +18,8 @@ import IconButton from '~/core/ui/IconButton';
 import Modal from '~/core/ui/Modal';
 import Button from '~/core/ui/Button';
 import { Activity } from '~/lib/activity/types/type';
+import { deleteActivity } from '~/lib/activity/mutation';
+import { deleteActivityAction } from '~/lib/activity/action';
 
 const TABLE_COLUMNS: ColumnDef<Activity>[] = [
   {
@@ -26,7 +28,7 @@ const TABLE_COLUMNS: ColumnDef<Activity>[] = [
       const activity = row.original;
 
       return (
-        <Link className={'hover:underline'} href={'activity/' + activity.id}>
+        <Link className={'hover:underline'} href={'activities/' + activity.id}>
           {activity.contactDetails?.first_name}{' '}
           {activity.contactDetails?.last_name}
         </Link>
@@ -76,16 +78,16 @@ const TABLE_COLUMNS: ColumnDef<Activity>[] = [
     },
   },
   {
-    header: '',
+    header: 'Action',
     id: 'actions',
     cell: ({ row }) => {
       const activity = row.original;
       return (
-        <div className={'flex justify-end'}>
+        <div className={'flex'}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <IconButton>
-                <EllipsisVerticalIcon className="w-5" />
+                <EllipsisVerticalIcon className="w-10" />
               </IconButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -94,7 +96,7 @@ const TABLE_COLUMNS: ColumnDef<Activity>[] = [
               }}
             >
               <DropdownMenuItem>
-                <Link href={'activity/' + row.original.id}>Edit Activity</Link>
+                <Link href={'activities/' + row.original.id}>Edit Activity</Link>
               </DropdownMenuItem>
               <DeleteTaskMenuItem activity={activity} />
             </DropdownMenuContent>
@@ -125,7 +127,7 @@ function DeleteTaskMenuItem({ activity }: { activity: Activity }) {
         activity={activity}
         onConfirm={() => {
           startTransition(async () => {
-            // await deleteTaskAction({ activityId: activity.id });
+            await deleteActivityAction({ activityId: activity.id });
           });
         }}
       >
