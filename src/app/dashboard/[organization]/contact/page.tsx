@@ -72,7 +72,7 @@ function ContactTableContainer({
       <div className={'flex space-x-4 justify-between items-center'}>
         <div className={'flex'}>
           <CreateContactModal>
-            <Button variant={'ghost'}>
+            <Button >
               <span className={'flex space-x-2 items-center'}>
                 <PlusCircleIcon className={'w-4'} />
 

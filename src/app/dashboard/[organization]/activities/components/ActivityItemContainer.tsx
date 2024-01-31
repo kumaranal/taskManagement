@@ -20,8 +20,8 @@ const ActivityItemContainer: React.FC<{
 }> = ({ activitity ,activitiesType,contacts}) => {
   const [isMutating, startTransition] = useTransition();
   const [status, setStatus] = useState();
-  const [selectedContact, setSelectedContact] = useState();
-  const [activities, setActivities] = useState();
+  const [selectedContact, setSelectedContact] = useState(activitity.contactDetails?.id?.toString());
+  const [activities, setActivities] = useState(activitity.activityType?.activity_type_id?.toString());
   const onUpdate: FormEventHandler<HTMLFormElement> = useCallback(
     (e) => {
       e.preventDefault();
