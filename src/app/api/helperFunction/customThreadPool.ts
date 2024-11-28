@@ -5,6 +5,9 @@
  * @param {number} threadPoolSize - Number of concurrent tasks to run.
  * @returns {Promise<Array>} - Resolves to an array of results from the operation.
  */
+
+import getLogger from '~/core/logger';
+const logger = getLogger();
 const processWithThreadPool = async (
   taskArray: [],
   operation: any,
@@ -20,7 +23,7 @@ const processWithThreadPool = async (
         const result = await operation(task); // Perform the operation
         results.push(result); // Save the result
       } catch (error) {
-        console.error(
+        logger.error(
           `Error processing task: ${error instanceof Error ? error.message : 'An unexpected error occurred'}`,
         );
       }
