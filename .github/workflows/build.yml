@@ -104,3 +104,17 @@ jobs:
         run: npm ci
       - name: 🔍 Run cspell
         run: npx cspell '**/*'
+  auto-merge:
+    name: 🤖 Auto Merge PR
+    needs: [lint, format] # Only merge if all checks pass
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' # Only run on PRs
+    steps:
+      - name: 🔄 Auto-merge PR
+        uses: pascalgn/automerge-action@v0.15.5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_AUTOMERGE_TOKEN }}
+        with:
+          mergeMethod: squash # Can be 'merge', 'rebase', or 'squash'
+          approve: true # Approves the PR before merging
+          deleteBranch: false # Deletes branch after merge
